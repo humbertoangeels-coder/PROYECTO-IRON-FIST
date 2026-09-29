@@ -204,8 +204,8 @@ function PLAYlvl3() {
     document.getElementById("Playlvl3").style.left = "-900px";
     document.getElementById("Dificultadlvl3").style.left = "-900px";
     
-    function ARRACARlvl3(){ JUEGOlvl3(); }
-    setTimeout(ARRACARlvl3, 4100);
+    function ARRANCARlvl3(){ JUEGOlvl3(); }
+    setTimeout(ARRANCARlvl3, 4100);
     
     function ESPERARlvl3() {
         function Cuenta_rglvl3() {
