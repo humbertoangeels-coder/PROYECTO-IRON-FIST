@@ -44,7 +44,7 @@ function JUEGOlvl3() {
             function Contactos(){
                 Swal.fire({
                     title : '¡MISIÓN CUMPLIDA! <br> Grupo Omega<br><br><img src="IMG/Logo_Omega.png" width = "120px">',
-                    html: '<b style="color: cyan;">Sabía que lo lograrías. La humanidad está a salvo por ahora... prepárate para IRON FIST 2. <br><br> CONTACTOS:<br><br> 71727432@certus.edu.pe <br> 71663265@certus.edu.pe <br> 70845813@certus.edu.pe <br> </b>',
+                    html: '<b style="color: cyan;">Sabía que lo lograrías. La humanidad está a salvo por ahora... prepárate para IRON FIST 2. <br><br> CONTACTOS:<br><br> 74199761@certus.edu.pe <br> 76159606@certus.edu.pe <br> 61031081@certus.edu.pe <br> </b>',
                     icon: 'success', // LIBRERIA CORREGIDA
                     background: '#000',
                     color: '#fff',

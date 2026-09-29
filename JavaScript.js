@@ -1,8 +1,8 @@
 Swal.fire({
-    title : '¿Preparado para salvar el mundo? <br><br> <img src="IMG/planeta_tierra.png" width = "120px"><br>',
-    html: 'IRON FIST, es un juego que mejorara tus reflejos a medida que pases de nivel, retandote cada vez mas a medida que avances y desbloqueando grandes logros al final de cada nivel, esperamos te diviertas y disfrutes de este gran juego   ',
+    title : '¿PREPARADO PARA SALVAR EL PLANETA? <br><br> <img src="IMG/planeta_tierra.png" width = "120px"><br>',
+    html: 'Iron Fist pondrá a prueba tus reflejos. Enfrenta amenazas espaciales cada vez más complejas, supera los niveles y desbloquea grandes logros. ¡Demuestra tu agilidad y protege la Tierra!',
     icon: 'sucess',
-    confirmButtonText: 'ESTOY PREPARADO',
+    confirmButtonText: 'ESTOY LISTO',
     width: '50%',
     height: '80%',
     timer: 100000,
@@ -128,7 +128,7 @@ function JUEGO(){
 
                 Swal.fire({
                     title : 'FELICIDADES POR SUPERAR <br> EL NIVEL <br><br> <img src="IMG/Check.png" width = "120px"><br>',
-                    html: 'Al parecer nos salvamos, agradecemos tu ayuda y ezfuerzo al superar este nivel, esperamos seguir contando contigo, si algo mas sucede y por cierto, no olvides que te esperan grandes cosas al final del juego asi que no pares de intentar ',
+                    html: 'Al parecer nos salvamos, agradecemos tu ayuda y esfuerzo al superar este nivel. Esperamos seguir contando contigo. Si algo más sucede, y por cierto, no olvides que te esperan grandes cosas al final del juego, así que no pares de intentar ',
                     icon: 'sucess',
                     confirmButtonText: 'QUIERO CONTINUAR',
                     width: '50%',

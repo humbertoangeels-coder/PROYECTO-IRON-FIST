@@ -463,3 +463,28 @@ html, body {
     box-shadow: 0 0 25px rgba(255, 0, 255, 0.9) !important;
     transform: translateY(-2px);
 }
+.Boton_preparado {
+    width: 70%;
+    height: 6vh;
+    background: linear-gradient(135deg, #2b1055, #7597de); /* Degradado espacial azul/morado */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Borde sutil brillante */
+    border-radius: 8px; /* Bordes redondeados modernos */
+    display: flex;
+    font-size: 1.2vw;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+    font-family: 'Inconsolata', monospace;
+    font-weight: bold;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* Sombra para dar profundidad */
+    transition: all 0.3s ease; /* Suaviza los efectos al interactuar */
+}
+
+/* Efecto al pasar el mouse por encima */
+.Boton_preparado:hover {
+    background: linear-gradient(135deg, #38136c, #8caefb);
+    box-shadow: 0 0 20px rgba(117, 151, 222, 0.6); /* Brillo de luz ambiental */
+    transform: translateY(-2px); /* Pequeño levante del botón */
+}
