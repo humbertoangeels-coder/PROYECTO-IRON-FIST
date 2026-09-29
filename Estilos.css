@@ -398,3 +398,68 @@ html, body {
     .Titulo-Jugar {font-size: 50px;}
     .Contenedor_Historia{top: 15vw; font-size: 1.3vw;}
 }
+/* --- MODAL CON EFECTO VIDRIO ESPACIAL / GLASSMORPHISM --- */
+.modal, .popup, .cyber-modal, .swal2-popup {
+    /* Fondo semi-transparente con tinte azul/morado oscuro espacial */
+    background: rgba(15, 10, 30, 0.75) !important; 
+    /* Efecto de desenfoque de lo que hay detrás (Glassmorphism) */
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    
+    border: 2px solid #ff00ff !important;
+    border-radius: 14px !important;
+    box-shadow: 0 0 40px rgba(255, 0, 127, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    padding: 30px !important;
+    max-width: 500px !important;
+}
+
+/* Título principal del modal */
+.modal h2, .modal h3, .cyber-modal h2 {
+    font-family: 'Press Start 2P', cursive !important;
+    color: #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.7) !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    text-align: center !important;
+    margin-bottom: 20px !important;
+}
+
+/* Párrafo descriptivo limpio */
+.modal p, .cyber-modal p {
+    font-family: sans-serif !important;
+    color: #e2e8f0 !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    text-align: center !important;
+    margin-bottom: 25px !important;
+}
+
+/* Imagen central */
+.modal img, .cyber-modal img {
+    display: block;
+    margin: 0 auto 20px auto;
+    max-width: 70px;
+}
+
+/* Botón de confirmación */
+.modal button, .cyber-modal button, .swal2-confirm {
+    background: linear-gradient(135deg, #ff007f, #990055) !important;
+    color: #ffffff !important;
+    border: 2px solid #ff00ff !important;
+    padding: 12px 24px !important;
+    font-family: 'Press Start 2P', cursive !important;
+    font-size: 11px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    box-shadow: 0 0 15px rgba(255, 0, 127, 0.6) !important;
+    transition: all 0.3s ease !important;
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+.modal button:hover, .cyber-modal button:hover {
+    background: #ff00ff !important;
+    box-shadow: 0 0 25px rgba(255, 0, 255, 0.9) !important;
+    transform: translateY(-2px);
+}
