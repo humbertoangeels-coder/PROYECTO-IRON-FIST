@@ -126,30 +126,30 @@ function JUEGOlvl3() {
     setTimeout(Meteorito_Direccion4lvl3, 3100);
     Intervalo_Dir4lvl3 = setInterval(Meteorito_Direccion4lvl3, 2150);
 
-    document.getElementById("Meteoritolvl3").addEventListener('mouseover', Explulsarlvl3);
-    document.getElementById("Meteorito2lvl3").addEventListener('mouseover', Explulsar2lvl3);
-    document.getElementById("Meteorito3lvl3").addEventListener('mouseover', Explulsar3lvl3);
-    document.getElementById("Meteorito4lvl3").addEventListener('mouseover', Explulsar4lvl3);
+    document.getElementById("Meteoritolvl3").addEventListener('mouseover', Expulsarlvl3);
+    document.getElementById("Meteorito2lvl3").addEventListener('mouseover', Expulsar2lvl3);
+    document.getElementById("Meteorito3lvl3").addEventListener('mouseover', Expulsar3lvl3);
+    document.getElementById("Meteorito4lvl3").addEventListener('mouseover', Expulsar4lvl3);
 
-    function Explulsarlvl3() {
+    function Expulsarlvl3() {
         document.getElementById("Puntos_sound").play();
         document.getElementById("Meteoritolvl3").style.left = "-500px";
         document.getElementById("Meteoritolvl3").style.top = Math.round(Math.random() * 430) + "px";
         document.getElementById("Meteoritolvl3").style.transition = "1.7s";
     }
-    function Explulsar2lvl3() {
+    function Expulsar2lvl3() {
         document.getElementById("Punto2").play();
         document.getElementById("Meteorito2lvl3").style.left = "-500px";
         document.getElementById("Meteorito2lvl3").style.top = Math.round(Math.random() * 430) + "px";
         document.getElementById("Meteorito2lvl3").style.transition = "1.7s";
     }
-    function Explulsar3lvl3() {
+    function Expulsar3lvl3() {
         document.getElementById("Punto3").play();
         document.getElementById("Meteorito3lvl3").style.left = "-500px";
         document.getElementById("Meteorito3lvl3").style.top = Math.round(Math.random() * 430) + "px";
         document.getElementById("Meteorito3lvl3").style.transition = "1.7s";
     }
-    function Explulsar4lvl3() {
+    function Expulsar4lvl3() {
         document.getElementById("Punto4").play();
         document.getElementById("Meteorito4lvl3").style.left = "-500px";
         document.getElementById("Meteorito4lvl3").style.top = Math.round(Math.random() * 430) + "px";

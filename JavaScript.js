@@ -174,12 +174,12 @@ function JUEGO(){
 
 
         //AQUI ADJUNTAMOS LA ACCION DE LA FUNCION EXPULZAR AL PASAR SOBRE EL METIORITO
-        document.getElementById("Meteiorito").addEventListener('mouseover', Explulsar)
-        document.getElementById("Meteiorito2").addEventListener('mouseover', Explulsar2)
+        document.getElementById("Meteiorito").addEventListener('mouseover', Expulsar)
+        document.getElementById("Meteiorito2").addEventListener('mouseover', Expulsar2)
 
 
         //ESTA ES LA FUNCION QUE EXPULSA AL METIRITO 1 DE MANERA ALEATORIA FUERA DEL MAPA
-        function Explulsar (){
+        function Expulsar (){
             document.getElementById("Puntos_sound").play()
             Distancia = "-500"
             Altura = Math.round(Math.random()* 450)
@@ -190,7 +190,7 @@ function JUEGO(){
 
 
         //ESTA ES LA FUNCION QUE EXPULSA AL METIRITO 2 DE MANERA ALEATORIA FUERA DEL MAPA
-        function Explulsar2 (){
+        function Expulsar2 (){
             document.getElementById("Punto2").play()
             Distancia = "-500"
             Altura = Math.round(Math.random()* 450)
