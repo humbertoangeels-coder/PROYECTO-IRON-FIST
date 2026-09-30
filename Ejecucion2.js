@@ -8,6 +8,11 @@ let juegoIniciadoLvl2 = false;
 let Restar_Tiempolvl2, Reanudar_trayectorialvl2, Reanudar_trayectoria2lvl2, Reanudar_trayectoria3lvl2;
 let Activador_iniciallvl2, Activador_inicial2lvl2, Activador_inicial3lvl2, perdisteLoopLvl2;
 
+function getDimensiones2() {
+    const tablero = document.querySelector('.Contenedorlvl2');
+    return { limiteX: tablero.offsetWidth * 0.70, alturaMax: tablero.offsetHeight - 70 };
+}
+
 function JUEGOlvl2() {
     nivel2Terminado = false;
     isPaused2 = false;
@@ -52,7 +57,7 @@ function JUEGOlvl2() {
         document.getElementById("NEXT").addEventListener('click', () => {
             document.getElementById("NIVEL_01").style.display = "none";
             document.getElementById("NIVEL_02").style.display = "none";
-            document.getElementById("NIVEL3").style.display = "block";
+            document.getElementById("NIVEL3").style.display = "flex";
         });
 
         detenerMeteoritosLvl2();
@@ -60,15 +65,14 @@ function JUEGOlvl2() {
         
         Swal.fire({
             title: 'FELICIDADES POR SUPERAR <br> EL NIVEL <br><br> <img src="IMG/Check.png" width="120px"><br>',
-            html: '¿VERDAD QUE FUE DIFÍCIL? Prepárate para el siguiente nivel que las cosas van a empeorar. Agradecemos tu dedicación en pasar este nivel, esperemos que puedas seguir defendiendo la tierra de esa manera y mejores tu habilidad de reacción.',
+            html: '¿VERDAD QUE FUE DIFÍCIL? Prepárate para el siguiente nivel que las cosas van a empeorar. Agradecemos tu dedicación en pasar este nivel.',
             icon: 'success',
             confirmButtonText: 'QUIERO CONTINUAR',
-            width: '50%', height: '80%', timer: 100000, timerProgressbar: true,
-            allowOutsideClick: true, allowEscapeKey: false, allowEnterKey: false, stopKeydownPropagation: false,
+            background: 'rgba(0, 5, 15, 0.95)', color: '#fff', backdrop: 'rgba(0, 210, 255, 0.15)',
+            confirmButtonColor: '#00d2ff', width: '50%', padding: '2em', allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false, stopKeydownPropagation: false, customClass: { popup: 'alerta-neon-intro' }
         });
 
-        Puntajelvl2 = 0;
-        Tiempolvl2 = 61;
+        Puntajelvl2 = 0; Tiempolvl2 = 61;
     }
 
     function detenerMeteoritosLvl2() {
@@ -85,7 +89,8 @@ function JUEGOlvl2() {
     function iniciarTrayectoriaLvl2(id, distancia, velocidad) {
         let el = document.getElementById(id);
         if(el){
-            let altura = Math.round(Math.random() * 450);
+            let dim = getDimensiones2();
+            let altura = Math.round(Math.random() * dim.alturaMax);
             el.style.left = distancia + "%";
             el.style.top = altura + "px";
             el.style.transition = velocidad + "s";
@@ -109,7 +114,8 @@ function JUEGOlvl2() {
         
         if(sound) { sound.currentTime = 0; sound.play(); }
         let el = document.getElementById(id);
-        let altura = Math.round(Math.random() * 450);
+        let dim = getDimensiones2();
+        let altura = Math.round(Math.random() * dim.alturaMax);
         el.style.left = "-500px";
         el.style.top = altura + "px";
         el.style.transition = "1.8s";
@@ -120,8 +126,9 @@ function JUEGOlvl2() {
         let m1 = document.getElementById("Meteioritolvl2");
         let m2 = document.getElementById("Meteiorito2lvl2");
         let m3 = document.getElementById("Meteiorito3lvl2");
+        let dim = getDimensiones2();
 
-        if ((m1 && m1.offsetLeft > 630) || (m2 && m2.offsetLeft > 630) || (m3 && m3.offsetLeft > 630)) {
+        if ((m1 && m1.offsetLeft > dim.limiteX) || (m2 && m2.offsetLeft > dim.limiteX) || (m3 && m3.offsetLeft > dim.limiteX)) {
             nivel2Terminado = true;
             document.getElementById("Perdiste_sound").play();
             alert("YA ES DEMASIADO TARDE, LOS METEORITOS DESTRUYERON GRAN PARTE DEL CONTINENTE Y LO MEJOR ES ESPERAR LO PEOR");
@@ -160,8 +167,8 @@ function PLAYlvl2() {
 
     document.getElementById("Fondo_Ciberpunk").play();
     document.getElementById("Texolvl2").style.left = "-900px";
-    document.getElementById("Playlvl2").style.left = "-900px";
-    document.getElementById("Dificultad").style.left = "-900px";
+    document.getElementById("Playlvl2").style.display = "none";
+    document.getElementById("Dificultad").style.opacity = "0";
 
     setTimeout(JUEGOlvl2, 4100);
 
@@ -190,7 +197,6 @@ function DETENER_JUEGOlvl2() {
             clearInterval(Restar_Tiempolvl2);
             clearInterval(Reanudar_trayectorialvl2); clearInterval(Reanudar_trayectoria2lvl2); clearInterval(Reanudar_trayectoria3lvl2);
             clearTimeout(Activador_iniciallvl2); clearTimeout(Activador_inicial2lvl2); clearTimeout(Activador_inicial3lvl2);
-            clearInterval(perdisteLoopLvl2); 
             
             meteoritos.forEach(id => {
                 let el = document.getElementById(id);
@@ -223,18 +229,6 @@ function DETENER_JUEGOlvl2() {
                 let el = document.getElementById('Meteiorito3lvl2');
                 if(el) { el.style.transition = "2s"; el.style.left = "80%"; }
             }, 2470);
-
-            perdisteLoopLvl2 = setInterval(() => {
-                if (nivel2Terminado || isPaused2) return;
-                let m1 = document.getElementById("Meteioritolvl2");
-                let m2 = document.getElementById("Meteiorito2lvl2");
-                let m3 = document.getElementById("Meteiorito3lvl2");
-                if ((m1 && m1.offsetLeft > 630) || (m2 && m2.offsetLeft > 630) || (m3 && m3.offsetLeft > 630)) {
-                    nivel2Terminado = true;
-                    document.getElementById("Perdiste_sound").play();
-                    alert("YA ES DEMASIADO TARDE, LOS METEORITOS DESTRUYERON GRAN PARTE DEL CONTINENTE Y LO MEJOR ES ESPERAR LO PEOR");
-                }
-            }, 20);
 
             meteoritos.forEach(id => {
                 let el = document.getElementById(id);

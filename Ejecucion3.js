@@ -9,6 +9,11 @@ let Intervalo_Dirlvl3, Intervalo_Dir2lvl3, Intervalo_Dir3lvl3, Intervalo_Dir4lvl
 let perdisteLooplvl3;
 let Arranque_1, Arranque_2, Arranque_3, Arranque_4;
 
+function getDimensiones3() {
+    const tablero = document.querySelector('.Contenedorlvl3');
+    return { limiteX: tablero.offsetWidth * 0.70, alturaMax: tablero.offsetHeight - 70 };
+}
+
 function JUEGOlvl3() {
     nivel3Terminado = false;
     isPaused3 = false;
@@ -57,13 +62,11 @@ function JUEGOlvl3() {
         setTimeout(() => {
             Swal.fire({
                 title : '¡MISIÓN CUMPLIDA! <br> Grupo Omega<br><br><img src="IMG/Logo_Omega.png" width = "120px">',
-                html: '<b style="color: cyan;">Sabía que lo lograrías. La humanidad está a salvo por ahora... prepárate para IRON FIST 2. <br><br> CONTACTOS:<br><br> humbertoangeels-coder@certus.edu.pe <br> jhonatan.palacios@certus.edu.pe <br> nathaly.valero@certus.edu.pe <br> christopher.benjamin@certus.edu.pe <br> alvaro.campos@certus.edu.pe </b>',
-                icon: 'success',
-                background: '#000',
-                color: '#fff',
-                confirmButtonText: 'ENTENDIDO',
+                html: '<b style="color: cyan;">La humanidad está a salvo gracias a ti.<br><br> CONTACTOS:<br><br> humbertoangeels-coder@certus.edu.pe <br> jhonatan.palacios@certus.edu.pe <br> nathaly.valero@certus.edu.pe <br> christopher.benjamin@certus.edu.pe <br> alvaro.campos@certus.edu.pe </b>',
+                icon: 'success', background: '#000', color: '#fff', confirmButtonText: 'ENTENDIDO',
                 width: '50%', height: '80%', timer: 100000, timerProgressbar: true,
                 allowOutsideClick: true, allowEscapeKey: false, allowEnterKey: false, stopKeydownPropagation: false,
+                customClass: { popup: 'alerta-neon-intro' }
             });
         }, 15000);
 
@@ -105,7 +108,8 @@ function JUEGOlvl3() {
     function iniciarTrayectoriaLvl3(id, velocidad) {
         let el = document.getElementById(id);
         if(el){
-            let altura = Math.round(Math.random() * 430);
+            let dim = getDimensiones3();
+            let altura = Math.round(Math.random() * dim.alturaMax);
             el.style.left = "80%";
             el.style.top = altura + "px";
             el.style.transition = velocidad + "s";
@@ -133,7 +137,8 @@ function JUEGOlvl3() {
 
         if(sound) { sound.currentTime = 0; sound.play(); }
         let el = document.getElementById(id);
-        let altura = Math.round(Math.random() * 430);
+        let dim = getDimensiones3();
+        let altura = Math.round(Math.random() * dim.alturaMax);
         el.style.left = "-500px";
         el.style.top = altura + "px";
         el.style.transition = "1.7s";
@@ -145,8 +150,9 @@ function JUEGOlvl3() {
         let m2 = document.getElementById("Meteorito2lvl3");
         let m3 = document.getElementById("Meteorito3lvl3");
         let m4 = document.getElementById("Meteorito4lvl3");
+        let dim = getDimensiones3();
 
-        if ((m1 && m1.offsetLeft > 630) || (m2 && m2.offsetLeft > 630) || (m3 && m3.offsetLeft > 630) || (m4 && m4.offsetLeft > 630)) {
+        if ((m1 && m1.offsetLeft > dim.limiteX) || (m2 && m2.offsetLeft > dim.limiteX) || (m3 && m3.offsetLeft > dim.limiteX) || (m4 && m4.offsetLeft > dim.limiteX)) {
             nivel3Terminado = true;
             document.getElementById("Tablero_Juegolvl3").classList.add("shake-anim");
             setTimeout(() => document.getElementById("Tablero_Juegolvl3").classList.remove("shake-anim"), 500);
@@ -191,8 +197,8 @@ function PLAYlvl3() {
 
     document.getElementById("Fondo_Ciberpunk").play();
     document.getElementById("Textolvl3").style.left = "-900px";
-    document.getElementById("Playlvl3").style.left = "-900px";
-    document.getElementById("Dificultadlvl3").style.left = "-900px";
+    document.getElementById("Playlvl3").style.display = "none";
+    document.getElementById("Dificultadlvl3").style.opacity = "0";
     
     setTimeout(JUEGOlvl3, 4100);
     
@@ -223,7 +229,6 @@ function DETENER_JUEGOlvl3() {
             clearInterval(Intervalo_Dir3lvl3); clearInterval(Intervalo_Dir4lvl3);
             clearTimeout(Arranque_1); clearTimeout(Arranque_2);
             clearTimeout(Arranque_3); clearTimeout(Arranque_4);
-            clearInterval(perdisteLooplvl3); 
 
             meteoritos.forEach(id => {
                 let el = document.getElementById(id);
@@ -260,19 +265,6 @@ function DETENER_JUEGOlvl3() {
                 let el = document.getElementById('Meteorito4lvl3');
                 if(el) { el.style.transition = "1.9s"; el.style.left = "80%"; }
             }, 2150);
-
-            perdisteLooplvl3 = setInterval(() => {
-                if (nivel3Terminado || isPaused3) return;
-                let m1 = document.getElementById("Meteoritolvl3");
-                let m2 = document.getElementById("Meteorito2lvl3");
-                let m3 = document.getElementById("Meteorito3lvl3");
-                let m4 = document.getElementById("Meteorito4lvl3");
-                if ((m1 && m1.offsetLeft > 630) || (m2 && m2.offsetLeft > 630) || (m3 && m3.offsetLeft > 630) || (m4 && m4.offsetLeft > 630)) {
-                    nivel3Terminado = true;
-                    document.getElementById("Perdiste_sound").play();
-                    alert("YA ES DEMASIADO TARDE LOS METEORITOS DESTRUYERON GRAN PARTE DEL CONTINENTE.");
-                }
-            }, 20);
 
             meteoritos.forEach(id => {
                 let el = document.getElementById(id);

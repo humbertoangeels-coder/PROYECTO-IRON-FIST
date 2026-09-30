@@ -1,16 +1,12 @@
-// Alerta de Bienvenida con estilo Sci-Fi
 Swal.fire({
     title: '<span style="font-family: \'Press Start 2P\', cursive; color: #00d2ff; text-shadow: 0 0 10px #00d2ff; font-size: 18px; line-height: 1.5;">¿PREPARADO PARA SALVAR EL MUNDO?</span>',
     html: '<div style="font-family: sans-serif; color: #e0e0e0; font-size: 14px; line-height: 1.6; padding: 10px;">IRON FIST es un juego que mejorará tus reflejos a medida que pases de nivel, retándote cada vez más a medida que avances y desbloqueando grandes logros al final de cada nivel. Esperamos te diviertas y disfrutes de este gran juego.</div>',
     imageUrl: 'IMG/planeta_tierra.png',
     imageWidth: 120,
     imageAlt: 'Planeta Tierra',
-    background: 'rgba(0, 5, 15, 0.95)',
-    color: '#fff',
-    backdrop: 'rgba(0, 210, 255, 0.15)',
+    background: 'rgba(0, 5, 15, 0.95)', color: '#fff', backdrop: 'rgba(0, 210, 255, 0.15)',
     confirmButtonText: '<span style="font-family: \'Press Start 2P\', cursive; font-size: 12px;">ESTOY PREPARADO</span>',
-    confirmButtonColor: '#00d2ff',
-    width: '50%', padding: '2em', allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false, stopKeydownPropagation: false, customClass: { popup: 'alerta-neon-intro' }
+    confirmButtonColor: '#00d2ff', width: '50%', padding: '2em', allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false, stopKeydownPropagation: false, customClass: { popup: 'alerta-neon-intro' }
 });
 
 let Tiempo = 71;
@@ -20,7 +16,6 @@ let nivel1Terminado = false;
 let isPaused1 = false;
 let juegoIniciadoLvl1 = false;
 
-// FUNCION DE NARRACIONES
 let Narracion = 1;
 document.getElementById("Contenedor_narracion").addEventListener('click', Iniciar_narracion);
 function Iniciar_narracion() {
@@ -44,7 +39,7 @@ function Graficos_fondo() {
         document.getElementById("Fondo").style.background = "url(IMG/Fondo_Espacio2.jpg)";
         document.getElementById("Fondo").style.backgroundAttachment = "fixed";
         document.getElementById("Fondo").style.backgroundRepeat = "no-repeat";
-        document.getElementById("Fondo").style.backgroundSize = "100% 120%";
+        document.getElementById("Fondo").style.backgroundSize = "cover";
         Graficos = 2;
     } else {
         document.getElementById("Recursos").style.marginLeft = "0%";
@@ -56,7 +51,11 @@ function Graficos_fondo() {
 let Restar_Tiempo, Reanudar_trayectoria, Reanudar_trayectoria2;
 let Activador_inicial, Activador_inicial2, perdisteLoop; 
 
-// LÓGICA PRINCIPAL DEL JUEGO (NIVEL 1)
+function getDimensiones1() {
+    const tablero = document.querySelector('.Contenedor');
+    return { limiteX: tablero.offsetWidth * 0.70, alturaMax: tablero.offsetHeight - 70 };
+}
+
 function JUEGO() {
     nivel1Terminado = false;
     isPaused1 = false;
@@ -100,28 +99,21 @@ function JUEGO() {
 
         document.getElementById("NEXT").addEventListener('click', () => {
             document.getElementById("NIVEL_01").style.display = "none";
-            document.getElementById("NIVEL_02").style.display = "block";
+            document.getElementById("NIVEL_02").style.display = "flex";
         });
         
         detenerMeteoritos();
 
         Swal.fire({
             title: '<span style="font-family: \'Press Start 2P\', cursive; color: #ff00ff; text-shadow: 0 0 10px #ff00ff; font-size: 22px; line-height: 1.5;">¡AMENAZA NEUTRALIZADA!</span>',
-            html: '<div style="font-family: sans-serif; color: #e0e0e0; font-size: 16px; line-height: 1.6; padding: 10px;">' +
-                  '<p>La primera oleada de asteroides ha sido destruida, pero la verdadera prueba apenas comienza.</p>' +
-                  '<p><strong style="color: #00ffcc; text-shadow: 0 0 8px #00ffcc; font-size: 18px;">¡Excelente trabajo, Comandante!</strong></p>' +
-                  '<p>Recarga tus escudos y prepárate. El <b>Nivel 2</b> no tendrá piedad.</p>' +
-                  '</div>',
-            imageUrl: 'IMG/Check.png',
-            imageWidth: 100,
-            imageAlt: 'Misión Cumplida',
+            html: '<div style="font-family: sans-serif; color: #e0e0e0; font-size: 16px; line-height: 1.6; padding: 10px;"><p>La primera oleada ha sido destruida, pero la verdadera prueba apenas comienza.</p><p><strong style="color: #00ffcc; text-shadow: 0 0 8px #00ffcc; font-size: 18px;">¡Excelente trabajo, Comandante!</strong></p><p>Recarga tus escudos y prepárate. El <b>Nivel 2</b> no tendrá piedad.</p></div>',
+            imageUrl: 'IMG/Check.png', imageWidth: 100, imageAlt: 'Misión Cumplida',
             background: 'rgba(0, 5, 15, 0.95)', color: '#fff', backdrop: 'rgba(255, 0, 255, 0.2)', 
             confirmButtonText: '<span style="font-family: \'Press Start 2P\', cursive; font-size: 12px;">INICIAR FASE 2</span>',
             confirmButtonColor: '#ff00ff', width: '50%', padding: '2em', allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false, stopKeydownPropagation: false, customClass: { popup: 'alerta-neon-lvl1' }
         });
 
-        Puntaje = 0;
-        Tiempo = 71;
+        Puntaje = 0; Tiempo = 71;
     }
 
     function detenerMeteoritos() {
@@ -138,7 +130,8 @@ function JUEGO() {
     function iniciarTrayectoria(id, distancia, velocidad) {
         let el = document.getElementById(id);
         if(el) {
-            let altura = Math.round(Math.random() * 450);
+            let dim = getDimensiones1();
+            let altura = Math.round(Math.random() * dim.alturaMax);
             el.style.left = distancia + "%";
             el.style.top = altura + "px";
             el.style.transition = velocidad + "s";
@@ -155,7 +148,8 @@ function JUEGO() {
         let sound = (id === 'Meteiorito') ? document.getElementById("Puntos_sound") : document.getElementById("Punto2");
         if(sound) { sound.currentTime = 0; sound.play(); }
         let el = document.getElementById(id);
-        let altura = Math.round(Math.random() * 450);
+        let dim = getDimensiones1();
+        let altura = Math.round(Math.random() * dim.alturaMax);
         el.style.left = "-500px";
         el.style.top = altura + "px";
         el.style.transition = "1.8s";
@@ -165,8 +159,9 @@ function JUEGO() {
         if (nivel1Terminado || isPaused1) return;
         let m1 = document.getElementById("Meteiorito");
         let m2 = document.getElementById("Meteiorito2");
+        let dim = getDimensiones1();
 
-        if ((m1 && m1.offsetLeft > 630) || (m2 && m2.offsetLeft > 630)) {
+        if ((m1 && m1.offsetLeft > dim.limiteX) || (m2 && m2.offsetLeft > dim.limiteX)) {
             nivel1Terminado = true; 
             document.getElementById("Perdiste_sound").play();
             alert("YA ES DEMASIADO TARDE, LOS METEORITOS DESTRUYERON GRAN PARTE DEL CONTINENTE Y LO MEJOR ES ESPERAR LO PEOR");
@@ -193,7 +188,6 @@ function JUEGO() {
     }
 }
 
-// BOTÓN JUGAR START
 document.getElementById("Play").addEventListener('click', PLAY);
 
 function PLAY() {
@@ -206,7 +200,7 @@ function PLAY() {
     musicaFondo.play();
 
     document.getElementById("Texo").style.left = "-900px";
-    document.getElementById("Contenedor_Mensaje_Star").style.left = "-100%";
+    document.getElementById("Contenedor_Mensaje_Star").style.opacity = "0";
 
     setTimeout(JUEGO, 4100);
 
@@ -225,7 +219,6 @@ function PLAY() {
     setTimeout(ESPERAR, 350);
 }
 
-// LÓGICA DE PAUSA (AHORA SÍ CONGELA TODO EL JUEGO AL 100%)
 function DETENER_JUEGO() {
     document.getElementById("Pause").addEventListener('click', () => {
         if (nivel1Terminado) return;
@@ -241,7 +234,6 @@ function DETENER_JUEGO() {
             clearInterval(Reanudar_trayectoria2);
             clearTimeout(Activador_inicial);
             clearTimeout(Activador_inicial2);
-            clearInterval(perdisteLoop); 
 
             meteoritos.forEach(id => {
                 let el = document.getElementById(id);
@@ -276,17 +268,6 @@ function DETENER_JUEGO() {
                 if(el) { el.style.transition = "2.4s"; el.style.left = "80%"; }
             }, 2350);
 
-            perdisteLoop = setInterval(() => {
-                if (nivel1Terminado || isPaused1) return;
-                let m1 = document.getElementById("Meteiorito");
-                let m2 = document.getElementById("Meteiorito2");
-                if ((m1 && m1.offsetLeft > 630) || (m2 && m2.offsetLeft > 630)) {
-                    nivel1Terminado = true; 
-                    document.getElementById("Perdiste_sound").play();
-                    alert("YA ES DEMASIADO TARDE, LOS METEORITOS DESTRUYERON GRAN PARTE DEL CONTINENTE Y LO MEJOR ES ESPERAR LO PEOR");
-                }
-            }, 20);
-
             meteoritos.forEach(id => {
                 let el = document.getElementById(id);
                 if(el) { el.style.transition = "2.4s"; el.style.left = "80%"; }
@@ -295,7 +276,6 @@ function DETENER_JUEGO() {
     });
 }
 
-// TRANSICIONES CINEMÁTICAS ENTRE PÁGINAS
 function aplicarTransicionCinematica(elemento) {
     elemento.style.transform = "scale(1.5) translateZ(100px)"; 
     elemento.style.opacity = "0"; 
@@ -308,8 +288,7 @@ function Mover() {
     aplicarTransicionCinematica(contenedor);
     
     setTimeout(() => {
-        document.getElementById("Reglas").style.top = "3%";
-        document.getElementById("Reglas").style.transition = "transform 1s cubic-bezier(0.25, 1, 0.5, 1)";
+        document.getElementById("Reglas").style.top = "0%";
         contenedor.style.display = "none";
     }, 800);
 }
@@ -320,16 +299,16 @@ function Mover_2() {
     
     setTimeout(() => {
         Reglas_Sacar.style.display = "none";
-        document.getElementById("Seccion_2").style.top = "0%";
         
-        document.getElementById("Imagen").style.left = "3%";
-        document.getElementById("Imagen").style.transition = "1s cubic-bezier(0.175, 0.885, 0.32, 1.275)"; 
+        let historiaPanel = document.querySelector(".Contenedor_Historia");
+        let videoPanel = document.querySelector(".Contenedor_Video_Holograma");
         
-        document.getElementById("Mensaje").style.right = "3%";
-        document.getElementById("Mensaje").style.transition = "1s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-        
-        document.getElementById("Titulo_historia").style.left = "3%";
-        document.getElementById("Titulo_historia").style.transition = "0.5s";
+        if (window.innerWidth > 950) {
+            historiaPanel.style.transform = "translateX(0)";
+            historiaPanel.style.opacity = "1";
+            videoPanel.style.transform = "translateX(0)";
+            videoPanel.style.opacity = "1";
+        }
     }, 800);
 }
 
@@ -337,17 +316,13 @@ function Mover_3() {
     var contenedor_2 = document.getElementById("Seccion_2");
     document.getElementById("narracion").pause();
     aplicarTransicionCinematica(contenedor_2);
-    
-    document.getElementById("Seccion_suprema").style.height = "100vh";
 
     setTimeout(() => {
         document.getElementById("Seccion_Juego").style.left = "0%";
-        document.getElementById("Seccion_Juego").style.transition = "left 1s cubic-bezier(0.22, 1, 0.36, 1)";
         contenedor_2.style.display = "none";
     }, 800);
 }
 
-// RELOJ INFERIOR
 function Reloj_Tiempo() {
     let Fecha = new Date();
     let Horas = Fecha.getHours();
