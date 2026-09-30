@@ -222,6 +222,14 @@ document.getElementById("Play").addEventListener('click', PLAY);
 let Conteo = 4;
 
 function PLAY() {
+    // Capturas el elemento de audio
+                var musicaFondo = document.getElementById("Fondo_Ciberpunk");
+
+                // Ajustas el volumen (0.2 equivale al 20% de volumen)
+                musicaFondo.volume = 0.02; 
+
+                // Inicias la reproducción
+                musicaFondo.play();
     document.getElementById("Fondo_Ciberpunk").play();
     document.getElementById("Texo").style.left = "-900px";
     document.getElementById("Contenedor_Mensaje_Star").style.left = "-100%";
@@ -246,6 +254,9 @@ function PLAY() {
 // LÓGICA DE PAUSA (AHORA SÍ CONGELA TODO EL JUEGO AL 100%)
 let Activo = true;
 function DETENER_JUEGO() {
+    if (juegoTerminado) {
+                    return; 
+                }
     document.getElementById("Pause").addEventListener('click', () => {
         if (nivel1Terminado) return;
         const meteoritos = ['Meteiorito', 'Meteiorito2'];
