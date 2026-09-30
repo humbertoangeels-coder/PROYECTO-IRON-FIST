@@ -28,13 +28,20 @@
         <!--SECCION - 1 ------------------------------------------------------------------------------------------------------->
 
         <section class="Seccion_01" id="Seccion_01">
-            <div class="Contenedor_RC" id="Contenedor_RC" onclick="Graficos_fondo()">
-                <div class="Recursos" id="Recursos"></div>
-            </div>
-            <h1 class="Nombre">IRON FIST</h1>
-            <h1 class="Texto_Principal">¿LISTO PARA DEFENDER<br> EL PLANETA?</h1>
-            <button class="Boton" id="Juego" onclick="Mover()">JUGAR</button>
-        </section>
+    <!-- Selector de Calidad / Recursos -->
+    <div class="Contenedor_RC" id="Contenedor_RC" onclick="Graficos_fondo()" title="Cambiar Gráficos">
+        <div class="Recursos" id="Recursos"></div>
+    </div>
+
+    <!-- Títulos Principales -->
+    <h1 class="Nombre">IRON FIST</h1>
+    <h2 class="Texto_Principal">¿LISTO PARA DEFENDER<br>EL PLANETA?</h2>
+
+    <!-- Botón Circular de Jugar -->
+    <div class="Boton_Jugar_Circular" id="Juego" onclick="Mover()">
+        <span>JUGAR</span>
+    </div>
+</section>
         <!--SECCION - 3 ------------------------------------------------------------------------------------------------------->
 
         <section id="Reglas">
