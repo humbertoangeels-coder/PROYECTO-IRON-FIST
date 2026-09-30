@@ -1,95 +1,82 @@
 /* --- RESET Y ESTILOS BASE --- */
 html, body {
     margin: 0; padding: 0; font-family: sans-serif;
-    overflow-x: hidden; /* Permitimos scroll Y solo si la pantalla es muy diminuta, pero ocultamos X */
-    height: 100%; width: 100vw;
+    overflow: hidden; /* Elimina scroll global */
+    height: 100vh; width: 100vw;
 }
 
 #Fondo {
     background-image: url(IMG/Fondo_Espacio.gif); color: white; background-attachment: fixed; 
     background-repeat: no-repeat; background-size: cover; background-position: center;
 }
-.Contenedor_Supremo { width: 100%; min-height: 100vh; overflow: hidden; position: relative;}
+.Contenedor_Supremo { width: 100%; height: 100vh; overflow: hidden; position: relative;}
+
+/* --- CONTROL DE PANTALLAS (LINEALIDAD) --- */
+.Seccion_01, #Reglas, #Seccion_2, #Seccion_Juego {
+    width: 100%; height: 100vh; position: absolute; top: 0; left: 0; box-sizing: border-box;
+}
+#Reglas, #Seccion_2, #Seccion_Juego {
+    display: none; /* Oculta todas las pantallas excepto la primera */
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
 
 /* --- PRIMERA SECCIÓN (INICIO) --- */
-.Seccion_01 { width: 100%; height: 100vh; overflow: hidden; position: relative; top: 0px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.Contenedor_RC { width: 5vw; height: 2.4vw; min-width: 60px; min-height: 28px; border-radius: 2rem; background: rgba(0, 0, 0, 0.5); border: 2px solid #00f0ff; position: absolute; top: 25px; right: 30px; left: auto; transform: none; cursor: pointer; box-shadow: 0 0 10px rgba(0, 240, 255, 0.4); transition: border-color 0.3s ease, box-shadow 0.3s ease; z-index: 100; }
+.Seccion_01 { display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; }
+.Contenedor_RC { width: 5vw; height: 2.4vw; min-width: 60px; min-height: 28px; border-radius: 2rem; background: rgba(0, 0, 0, 0.5); border: 2px solid #00f0ff; position: absolute; top: 25px; right: 30px; cursor: pointer; box-shadow: 0 0 10px rgba(0, 240, 255, 0.4); transition: 0.3s ease; z-index: 100; }
 .Contenedor_RC:hover { border-color: #a855f7; box-shadow: 0 0 18px rgba(168, 85, 247, 0.8); }
-.Recursos { width: 40%; height: 100%; border-radius: 50%; background: #00f0ff; margin-left: 0%; transition: margin-left 0.4s ease, background 0.4s ease; box-shadow: 0 0 8px #00f0ff; }
+.Recursos { width: 40%; height: 100%; border-radius: 50%; background: #00f0ff; transition: 0.4s ease; box-shadow: 0 0 8px #00f0ff; }
 .Nombre { font-family: 'Press Start 2P', cursive; text-align: center; font-size: clamp(30px, 5vw, 80px); color: #ffffff; margin: 0; text-shadow: 0 0 20px rgba(168, 85, 247, 0.8), 0 0 40px rgba(0, 240, 255, 0.5); letter-spacing: 2px; }
 .Texto_Principal { font-family: 'Press Start 2P', cursive; text-align: center; font-size: clamp(14px, 2.2vw, 40px); color: #00f0ff; margin-top: 1.5vw; margin-bottom: 3vw; line-height: 1.4; text-shadow: 0 0 12px rgba(0, 240, 255, 0.6); padding: 0 20px;}
 
-.Boton_Jugar_Circular { width: 12vw; height: 12vw; max-width: 150px; max-height: 150px; min-width: 110px; min-height: 110px; border-radius: 50%; background: linear-gradient(135deg, #9333ea, #2563eb); border: 3px solid #ffffff; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 30px rgba(147, 51, 234, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.3); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, background 0.3s ease; }
+.Boton_Jugar_Circular { width: 12vw; height: 12vw; max-width: 150px; max-height: 150px; min-width: 110px; min-height: 110px; border-radius: 50%; background: linear-gradient(135deg, #9333ea, #2563eb); border: 3px solid #ffffff; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 30px rgba(147, 51, 234, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.3); transition: 0.3s; }
 .Boton_Jugar_Circular:hover { transform: scale(1.12); background: linear-gradient(135deg, #a855f7, #00f0ff); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 45px rgba(0, 240, 255, 1), inset 0 0 20px rgba(255, 255, 255, 0.5); }
-.Boton_Jugar_Circular:active { transform: scale(0.95); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 240, 255, 0.8); }
-.Boton_Jugar_Circular span { font-family: 'Press Start 2P', cursive; font-size: clamp(10px, 1.1vw, 20px); color: #ffffff; text-align: center; user-select: none; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); }
+.Boton_Jugar_Circular span { font-family: 'Press Start 2P', cursive; font-size: clamp(10px, 1.1vw, 20px); color: #ffffff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); }
 
 /* --- REGLAS --- */
-#Reglas { position: relative; width: 100%; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2vw 0; top: 0 !important; left: 0 !important; box-sizing: border-box; }
+#Reglas { flex-direction: column; align-items: center; justify-content: center; padding: 2vw 0; }
 .Titulo_Reglas { font-size: clamp(16px, 2.2vw, 35px); font-family: 'Press Start 2P', cursive; text-align: center; color: #ffffff; margin-top: 0; margin-bottom: 2vw; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); padding: 0 15px;}
 .Reglas_Grid { display: grid; grid-template-columns: 1fr 0.8fr 1fr; gap: 1.5vw; width: 90%; max-width: 1100px; margin-bottom: 2vw; align-items: center; }
 .Contenedor_Img_Centro { grid-column: 2; grid-row: 1 / span 2; display: flex; justify-content: center; align-items: center; }
-.Img_Reglas_Centro { width: 100%; max-width: 280px; height: auto; border: 3px solid #00f0ff; border-radius: 12px; box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); object-fit: cover; transition: transform 0.3s ease, box-shadow 0.3s ease; }
-.Img_Reglas_Centro:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 240, 255, 0.8); }
-.Regla_Card { background: rgba(20, 20, 35, 0.85); color: #ffffff; border: 2px solid #a855f7; border-radius: 12px; padding: 15px; box-shadow: 0px 4px 15px rgba(168, 85, 247, 0.3); backdrop-filter: blur(5px); transition: transform 0.3s ease, border-color 0.3s ease; }
-.Regla_Card:hover { transform: translateY(-5px); border-color: #00f0ff; box-shadow: 0px 6px 20px rgba(0, 240, 255, 0.4); }
-.Regla_Card h3 { font-family: 'Press Start 2P', cursive; font-size: clamp(10px, 0.85vw, 16px); color: #00f0ff; margin-top: 0; margin-bottom: 15px; text-align: center; }
-.Regla_Card p { font-family: sans-serif; font-size: clamp(12px, 0.85vw, 16px); line-height: 1.5; margin: 0; text-align: justify; }
+.Img_Reglas_Centro { width: 100%; max-width: 280px; height: auto; border: 3px solid #00f0ff; border-radius: 12px; box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); object-fit: cover; transition: 0.3s ease;}
+.Regla_Card { background: rgba(20, 20, 35, 0.85); color: #ffffff; border: 2px solid #a855f7; border-radius: 12px; padding: 15px; box-shadow: 0px 4px 15px rgba(168, 85, 247, 0.3); backdrop-filter: blur(5px); }
+.Regla_Card h3 { font-family: 'Press Start 2P', cursive; font-size: clamp(10px, 0.85vw, 16px); color: #00f0ff; text-align: center; margin-bottom: 10px;}
+.Regla_Card p { font-family: sans-serif; font-size: clamp(12px, 0.85vw, 16px); line-height: 1.5; text-align: justify; margin: 0;}
 
-.Boton_Listo_Circular { width: 7vw; height: 7vw; min-width: 90px; min-height: 90px; border-radius: 50%; background: linear-gradient(135deg, #7e22ce, #3b82f6); border: 3px solid #ffffff; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 20px rgba(126, 34, 206, 0.8); transition: transform 0.3s ease, box-shadow 0.3s ease; margin: 20px auto; }
+.Boton_Listo_Circular { width: 7vw; height: 7vw; min-width: 90px; min-height: 90px; border-radius: 50%; background: linear-gradient(135deg, #7e22ce, #3b82f6); border: 3px solid #ffffff; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 20px rgba(126, 34, 206, 0.8); transition: 0.3s ease; margin: 20px auto; }
 .Boton_Listo_Circular:hover { transform: scale(1.1); box-shadow: 0 0 30px rgba(0, 240, 255, 1); }
-.Boton_Listo_Circular span { font-family: 'Press Start 2P', cursive; font-size: clamp(8px, 0.65vw, 12px); color: #ffffff; text-align: center; line-height: 1.3; padding: 8px; user-select: none; }
+.Boton_Listo_Circular span { font-family: 'Press Start 2P', cursive; font-size: clamp(8px, 0.65vw, 12px); color: #ffffff; text-align: center; padding: 8px;}
 
-/* --- SEGUNDA SECCIÓN (HISTORIA Y HOLOGRAMA) RESPONSIVE --- */
-#Seccion_2 { width: 100%; height: 100vh; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.Titulo_historia { font-family: 'Press Start 2P', cursive; text-align: center; font-size: clamp(20px, 3vw, 40px); position: absolute; top: 5%; width: 100%; text-shadow: 0 0 5px currentColor, 0 0 10px currentColor; opacity: 0; transition: 0.5s; }
-
-/* Flexbox Layout para el Video y la Historia */
-.Layout_Historia {
-    display: flex; justify-content: center; align-items: center; width: 90%; max-width: 1200px; gap: 40px; margin-top: 50px;
-}
-
-.Contenedor_Video_Holograma {
-    width: 50%; aspect-ratio: 16/9; position: relative; border: 3px solid cyan; box-shadow: 0 0 25px cyan; border-radius: 10px; overflow: hidden; background: #000;
-    opacity: 0; transform: translateX(-50px); transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
+/* --- SEGUNDA SECCIÓN (HISTORIA) --- */
+#Seccion_2 { flex-direction: column; align-items: center; justify-content: center; }
+.Titulo_historia { font-family: 'Press Start 2P', cursive; text-align: center; font-size: clamp(20px, 3vw, 40px); position: absolute; top: 5%; width: 100%; text-shadow: 0 0 10px currentColor; }
+.Layout_Historia { display: flex; justify-content: center; align-items: center; width: 90%; max-width: 1200px; gap: 40px; margin-top: 50px; }
+.Contenedor_Video_Holograma { width: 50%; aspect-ratio: 16/9; position: relative; border: 3px solid cyan; box-shadow: 0 0 25px cyan; border-radius: 10px; overflow: hidden; background: #000; }
 .Video_Narrativa { width: 100%; height: 100%; object-fit: cover; display: block; filter: sepia(100%) hue-rotate(180deg) saturate(200%) brightness(0.8); }
 .Scanlines_Overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px); pointer-events: none; animation: scanlineScroll 10s linear infinite; }
 @keyframes scanlineScroll { 0% { background-position: 0 0; } 100% { background-position: 0 1000px; } }
 
-.Contenedor_Historia {
-    width: 50%; background: rgba(0, 5, 15, 0.85); color: #e0e0e0; padding: 25px; border: 2px solid #ff00ff; border-radius: 10px; backdrop-filter: blur(8px); box-shadow: 0 0 20px rgba(255, 0, 255, 0.4); font-size: clamp(12px, 1.1vw, 18px); line-height: 1.6;
-    opacity: 0; transform: translateX(50px); transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-sizing: border-box;
-}
-.Contenedor_Historia h3 { color: #00d2ff; font-family: 'Press Start 2P', cursive; font-size: clamp(10px, 1vw, 16px); text-shadow: 0 0 10px #00d2ff; margin-bottom: 15px; line-height: 1.4; }
-
+.Contenedor_Historia { width: 50%; background: rgba(0, 5, 15, 0.85); color: #e0e0e0; padding: 25px; border: 2px solid #ff00ff; border-radius: 10px; backdrop-filter: blur(8px); box-shadow: 0 0 20px rgba(255, 0, 255, 0.4); font-size: clamp(12px, 1.1vw, 18px); line-height: 1.6; }
+.Contenedor_Historia h3 { color: #00d2ff; font-family: 'Press Start 2P', cursive; font-size: clamp(10px, 1vw, 16px); text-shadow: 0 0 10px #00d2ff; margin-bottom: 15px;}
 .BOTONES_2 { display: flex; align-items: center; justify-content: flex-start; gap: 20px; margin-top: 25px; }
 .Boton_preparado { background: #ff00ff; color: white; padding: 15px 25px; font-family: 'Press Start 2P', cursive; font-size: clamp(9px, 0.8vw, 14px); cursor: pointer; border-radius: 5px; box-shadow: 0 0 15px #ff00ff; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); transition: 0.3s; }
 .Boton_preparado:hover { transform: scale(1.05); background: white; color: #ff00ff; }
 .Contenedor_narracion { width: 45px; height: 45px; background: cyan; color: black; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 0 15px cyan; transition: 0.3s; }
-.Contenedor_narracion:hover { transform: scale(1.1); background: white; color: cyan; }
-
 
 /* --- TERCERA SECCIÓN (JUEGO GENERAL) --- */
-.Seccion_Juego { width: 100%; height: 100vh; background-size: cover; display: flex; align-items: center; justify-content: center; flex-direction: column; position: absolute; top: 0; left: -100%; transition: 1s cubic-bezier(0.22, 1, 0.36, 1); }
-.Tituloar_Juego_5 { font-family: 'Press Start 2P', cursive; text-align: center; font-size: clamp(20px, 4vw, 50px); margin-bottom: 20px;}
-.Nivel_Contenedor { width: 100%; display: flex; flex-direction: column; align-items: center;}
+.Seccion_Juego { align-items: center; justify-content: center; flex-direction: column; }
+.Tituloar_Juego_5 { font-family: 'Press Start 2P', cursive; text-align: center; font-size: clamp(20px, 4vw, 50px); margin-bottom: 20px; text-shadow: 0 0 15px #fff;}
+.Nivel_Contenedor { width: 100%; display: flex; flex-direction: column; align-items: center; }
 
 /* ==========================================================================
-   NIVELES Y CABECERAS (100% RESPONSIVE)
+   NIVELES Y CABECERAS
    ========================================================================== */
-.Contenedor, .Contenedorlvl2, .Contenedorlvl3 {
-    width: 95%; max-width: 900px; aspect-ratio: 16/9; height: auto; position: relative; overflow: hidden; cursor: crosshair; margin: 0 auto; border-radius: 0 0 10px 10px;
-    background: url(IMG/Fondo.jpg) no-repeat center center; background-size: cover; 
-}
+.Contenedor, .Contenedorlvl2, .Contenedorlvl3 { width: 95%; max-width: 900px; aspect-ratio: 16/9; height: auto; position: relative; overflow: hidden; cursor: crosshair; margin: 0 auto; border-radius: 0 0 10px 10px; background: url(IMG/Fondo.jpg) no-repeat center center; background-size: cover; }
 .Contenedor { border: 3px solid #ff00ff; box-shadow: 0 0 20px #ff00ff, inset 0 0 15px #ff00ff; }
 .Contenedorlvl2 { border: 3px solid #00d2ff; box-shadow: 0 0 20px #00d2ff, inset 0 0 15px #00d2ff; }
 .Contenedorlvl3 { border: 3px solid cyan; box-shadow: 0 0 20px cyan, inset 0 0 15px cyan; }
 
-.Cabezera, .Cabezeralvl2, .Cabezeralvl3 {
-    width: 95%; max-width: 900px; min-height: 60px; background: rgba(0, 10, 30, 0.95); border-bottom: none; display: flex; align-items: center; justify-content: space-around;
-    margin: 0 auto; border-radius: 10px 10px 0 0; padding: 10px 0; box-sizing: border-box;
-}
+.Cabezera, .Cabezeralvl2, .Cabezeralvl3 { width: 95%; max-width: 900px; min-height: 60px; background: rgba(0, 10, 30, 0.95); border-bottom: none; display: flex; align-items: center; justify-content: space-around; margin: 0 auto; border-radius: 10px 10px 0 0; padding: 10px 0; box-sizing: border-box; }
 .Cabezera { border: 3px solid #ff00ff; box-shadow: 0 -5px 15px rgba(255, 0, 255, 0.2); }
 .Cabezeralvl2 { border: 3px solid #00d2ff; box-shadow: 0 -5px 15px rgba(0, 210, 255, 0.2); }
 .Cabezeralvl3 { border: 3px solid cyan; box-shadow: 0 -5px 15px rgba(0, 255, 255, 0.2); }
@@ -100,19 +87,29 @@ html, body {
 .Tiempolvl3 h3, .Puntajelvl3 h3 { margin: 0 0 8px 0; color: cyan; text-shadow: 0 0 5px cyan; font-size: clamp(10px, 1.5vw, 14px);}
 
 .Start, .Startlvl2, .Startlvl3 { width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); position: absolute; top: 0%; z-index: 100000; display: flex; align-items: center; justify-content: center; flex-direction: column; color: white; text-align: center; }
-.Contenedor_Mensaje_Star { height: 100%; width: 100%; background: transparent; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;}
+.Contenedor_Mensaje_Star { display: flex; flex-direction: column; align-items: center; justify-content: center;}
 
 .Texo, .Texolvl2, .Textolvl3 { font-size: clamp(16px, 3.5vw, 30px); font-family: 'Press Start 2P', cursive; margin-bottom: 20px;}
 .Texo { text-shadow: 0 0 10px #ff00ff; } .Texolvl2 { text-shadow: 0 0 10px #00d2ff; } .Textolvl3 { text-shadow: 0 0 10px cyan; }
 
-.Dificultad_Flex { display: flex; justify-content: center; align-items: center; width: 100%; margin-bottom: 20px; flex-wrap: wrap;}
+.Dificultad_Flex { display: flex; justify-content: center; align-items: center; width: 100%; margin-bottom: 20px;}
 .Img_Dificultad { width: 12%; max-width: 80px; min-width: 40px; height: auto;}
 .Pollo { font-family: 'Press Start 2P', cursive; margin: 0 15px; text-shadow: 0 0 10px #ff00ff; font-size: clamp(10px, 2vw, 24px);}
-.Dificultad_Text_2 { text-shadow: 0 0 10px #00d2ff; }
-.Dificultad_Text_3 { text-shadow: 0 0 10px cyan; }
+.Dificultad_Text_2 { text-shadow: 0 0 10px #00d2ff; } .Dificultad_Text_3 { text-shadow: 0 0 10px cyan; }
 
-#Contenedor_contador, #Contenedor_contadorlvl2, #Contenedor_contadorlvl3 { height: 100%; display: table; position: absolute; }
-#RGB, #RGBlvl2, #RGBlvl3 { font-size: clamp(80px, 20vw, 200px); position: relative; font-family: 'Press Start 2P', cursive; display: table-cell; vertical-align: middle; }
+#Contenedor_contador, #Contenedor_contadorlvl2, #Contenedor_contadorlvl3 { 
+    height: 100%; 
+    width: 100%; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    position: absolute; 
+    top: 0; 
+    left: 0;
+    pointer-events: none; /* ESTA LÍNEA PERMITE QUE LOS CLICS ATRAVIESEN LA CAPA INVISIBLE */
+    z-index: 20;
+}
+#RGB, #RGBlvl2, #RGBlvl3 { font-size: clamp(80px, 20vw, 200px); font-family: 'Press Start 2P', cursive; }
 #RGB { color: #ff00ff; text-shadow: 0 0 20px #ff00ff; } #RGBlvl2 { color: #00d2ff; text-shadow: 0 0 20px #00d2ff; } #RGBlvl3 { color: cyan; text-shadow: 0 0 30px cyan; }
 
 .Pausa_Pantalla, .Pausa_Pantallalvl2, .Pausa_Pantallalvl3 { position: absolute; top: 0%; width: 100%; height: 100%; background: rgba(0, 5, 15, 0.85); backdrop-filter: blur(8px); text-align: center; z-index: 1000000; display: none; justify-content: center; align-items: center; }
@@ -129,14 +126,13 @@ html, body {
 
 .Limite, .Limitelvl2, .Limitelvl3 { height: 100%; width: 50px; position: absolute; top: 0%; left: 70%; border-left: 4px solid rgba(255, 0, 0, 0.8) !important; box-shadow: -5px 0 15px rgba(255, 0, 0, 0.9); z-index: 2; pointer-events: none;}
 
-/* ASTEROIDES EN LLAMAS RESPONSIVOS */
+/* ASTEROIDES EN LLAMAS */
 .Meteiorito, .Meteioritolvl2, .Meteoritolvl3 {
     position: absolute; z-index: 1000; cursor: crosshair; width: 12%; max-width: 70px; min-width: 40px; height: auto;
     filter: drop-shadow(25px 0px 10px rgba(255, 80, 0, 0.9)) drop-shadow(50px 0px 25px rgba(255, 0, 0, 0.6)) brightness(1.2);
     animation: rotarFuego 1.5s linear infinite;
 }
 #Meteiorito, #Meteiorito2, #Meteioritolvl2, #Meteiorito2lvl2, #Meteiorito3lvl2, #Meteoritolvl3, #Meteorito2lvl3, #Meteorito3lvl3, #Meteorito4lvl3 { top: 0px; left: -20%; }
-
 @keyframes rotarFuego {
     0% { transform: rotate(0deg) scale(1); filter: drop-shadow(20px 0px 8px #ff4500) drop-shadow(40px 0px 20px #ff0000); }
     50% { transform: rotate(180deg) scale(1.1); filter: drop-shadow(35px 0px 15px #ffae00) drop-shadow(60px 0px 30px #ff0000); }
@@ -157,6 +153,8 @@ html, body {
     clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
     transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); font-family: 'Press Start 2P', cursive;
     display: flex; align-items: center; justify-content: center; cursor: pointer;
+    z-index: 50; /* ASEGURA QUE ESTÉN POR ENCIMA DE TODO */
+    pointer-events: auto; /* ASEGURA QUE RECIBAN CLICS */
 }
 .Play { background-color: #ff00ff; color: #fff; width: 200px; height: 50px; margin-top: 20px; font-size: 14px;}
 .Playlvl2 { background-color: #00d2ff; color: #000; width: 200px; height: 50px; margin-top: 20px; font-size: 14px;}
@@ -171,7 +169,6 @@ html, body {
     transform: scale(1.05) translate(4px, 4px); filter: brightness(1.5) contrast(1.2);
     animation: glitchHover 0.3s infinite alternate;
 }
-
 @keyframes glitchHover {
     0% { clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px); }
     100% { clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 20px) 100%, 0 100%, 0 20px); }
@@ -201,7 +198,11 @@ html, body {
 .Nada h2 { font-family: 'Press Start 2P', cursive; color: #ff00ff; font-size: clamp(8px, 0.8vw, 10px); margin: 0 0 10px 0; line-height: 1.4;}
 .Nada p { font-family: sans-serif; font-size: clamp(10px, 1vw, 13px); color: #e0e0e0; line-height: 1.4; margin: 0;}
 
-/* OTROS COMPLEMENTOS */
+/*BLOQUEO DE NIVELES INICIAL*/
+#NIVEL_01, #NIVEL_02, #NIVEL3 { display: none; }
+#NIVEL_01 { display: flex; } /* El primer nivel activo por defecto */
+
+/* OTROS COMPLEMENTOS NIVEL 3 */
 .Pantalla_navelvl3, .Pantalla_Nodrizalvl3, .Pantalla_nave2lvl3 { display: flex; align-items: center; justify-content: center; flex-direction: column; position: absolute; left: -100%; z-index: 3;}
 .Pantalla_navelvl3 { top: 0; } .Pantalla_Nodrizalvl3 { top: 32%; } .Pantalla_nave2lvl3 { top: 63%; }
 .Ovnislvl3 { width: 84px; transform: rotate(90deg); } #Nodrizalvl3 { width: 140px; transform: rotate(90deg); }
@@ -214,16 +215,13 @@ html, body {
 @media (max-width: 950px) {
     .Reglas_Grid { grid-template-columns: 1fr; }
     .Contenedor_Img_Centro { grid-column: 1; grid-row: 1; }
-    
     .Layout_Historia { flex-direction: column; margin-top: 80px; }
     .Contenedor_Historia, .Contenedor_Video_Holograma { width: 100%; right: auto; left: auto; position: relative; opacity: 1; transform: none !important;}
-    
     .Contenedor_LVL { flex-direction: column; }
     .Contenedor_Reloj, .Nada { width: 100%; }
     .Nada { flex-direction: column; text-align: center; }
     .Caja_Text_Lvl { width: 100%; margin-bottom: 15px;}
     .NEXT { width: 100%; }
-    
     .Cabezera, .Cabezeralvl2, .Cabezeralvl3 { flex-wrap: wrap; }
     .Tiempo, .Puntaje, .Pause, .Pauselvl2, .Pauselvl3 { margin-bottom: 5px;}
 }

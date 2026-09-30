@@ -18,6 +18,11 @@ function JUEGOlvl3() {
     nivel3Terminado = false;
     isPaused3 = false;
 
+    // ESCONDER BOTON DE SIGUIENTE NIVEL YA QUE ES EL ÚLTIMO
+    document.getElementById("NEXT").style.display = "none";
+    document.getElementById("Siguiente_Texto_H2").innerText = "¡NIVEL FINAL!";
+    document.getElementById("Siguiente_Texto_P").innerText = "Sobrevive a esta última oleada para salvar a la humanidad. Demuestra todo lo que has aprendido.";
+
     function Tiempo_Disminurlvl3() { 
         if (nivel3Terminado || isPaused3) return;
         Tiempolvl3--;
@@ -145,7 +150,7 @@ function JUEGOlvl3() {
     }
 
     function checkPerdisteLvl3() {
-        if (nivel3Terminado || isPaused3) return;
+        if (nivel3Terminado || isPaused3) return; // FIX DE PAUSA APLICADO
         let m1 = document.getElementById("Meteoritolvl3");
         let m2 = document.getElementById("Meteorito2lvl3");
         let m3 = document.getElementById("Meteorito3lvl3");

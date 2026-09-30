@@ -1,24 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Estilos.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <title>IRON FIST</title>
 </head>
-
 <body id="Fondo">
-
-    <!--SECCION - CONTENEDOR GENERAL-->
     <section id="Seccion_suprema" class="Contenedor_Supremo">
-
-        <!--SECCION - 1 -->
+        <!-- SECCION 1: INICIO -->
         <section class="Seccion_01" id="Seccion_01">
             <div class="Contenedor_RC" id="Contenedor_RC" onclick="Graficos_fondo()" title="Cambiar Gráficos">
                 <div class="Recursos" id="Recursos"></div>
@@ -30,28 +24,28 @@
             </div>
         </section>
 
-        <!--SECCION - 3 (REGLAS) -->
+        <!-- SECCION 2: REGLAS -->
         <section id="Reglas">
             <h1 class="Titulo_Reglas">LEE LAS REGLAS ANTES DE JUGAR</h1>
             <div class="Reglas_Grid">
                 <div class="Regla_Card">
                     <h3>REGLA 1: PUNTAJE</h3>
-                    <p>Pasa el cursor sobre los meteoritos que se aproximan para desviarlos. Cada meteorito interceptado suma puntos a tu marcador.</p>
+                    <p>Pasa el cursor sobre los meteoritos que se aproximan para desviarlos. Cada meteorito suma puntos a tu marcador.</p>
                 </div>
                 <div class="Regla_Card">
                     <h3>REGLA 2: TIEMPO LÍMITE</h3>
-                    <p>Tienes un límite de tiempo por nivel. Debes alcanzar la puntuación requerida antes de que el contador llegue a cero para evitar la derrota.</p>
+                    <p>Tienes un límite de tiempo por nivel. Alcanza la puntuación requerida antes de que el contador llegue a cero.</p>
                 </div>
                 <div class="Contenedor_Img_Centro">
                     <img src="IMG/JUEGO.jpg" alt="Referencia del juego" class="Img_Reglas_Centro">
                 </div>
                 <div class="Regla_Card">
                     <h3>REGLA 3: VELOCIDAD Y AMENAZAS</h3>
-                    <p>Los meteoritos aumentan su cantidad e impredecibilidad según la dificultad del nivel. Mantén tus reflejos atentos en todo momento.</p>
+                    <p>Los meteoritos aumentan su cantidad e impredecibilidad según la dificultad. Mantén tus reflejos atentos.</p>
                 </div>
                 <div class="Regla_Card">
                     <h3>REGLA 4: LÍNEA DE DEFENSA</h3>
-                    <p>Evita a toda costa que los meteoritos crucen la línea punteada de límite. Si alguno la supera, la Tierra sufrirá un daño irreparable (GAME OVER).</p>
+                    <p>Evita a toda costa que los meteoritos crucen la línea roja de límite, o la Tierra sufrirá un daño irreparable.</p>
                 </div>
             </div>
             <div class="Boton_Listo_Circular" onclick="Mover_2()">
@@ -59,34 +53,37 @@
             </div>
         </section>
 
-        <!--SECCION - 4 (HISTORIA) -->
+        <!-- SECCION 3: HISTORIA -->
         <section id="Seccion_2">
             <h1 class="Titulo_historia" id="Titulo_historia">Todo empezo cuando...</h1>
-            <div class="Contenedor_Historia" id="Mensaje">
-                <h3 style="margin-top: -1%;">CAPÍTULO I: NUESTRA SALVACIÓN</h3>
-                En cierto día, las noticias de todo el mundo anunciaron que muy pronto se acercarían meteoritos de gran tamaño a la tierra y que solo era cuestión de horas para que comenzaran a llegar. El gobierno ya tenía preparado la iniciativa "IRON FIST", que consistía en los proyectiles más letales de la tierra y nuestra única salvación.
-                <div class="BOTONES_2">
-                    <div class="Boton_preparado" onclick="Mover_3()">¿Estás preparado?</div>
-                    <div class="Contenedor_narracion" id="Contenedor_narracion">
-                        <i class="fas fa-play" id="VOLUMEN"></i><i class="fas fa-pause" id="PAUSE"></i>
+            <div class="Layout_Historia">
+                <div class="Contenedor_Historia" id="Mensaje">
+                    <h3 style="margin-top: -1%;">CAPÍTULO I: NUESTRA SALVACIÓN</h3>
+                    En cierto día, las noticias de todo el mundo anunciaron que muy pronto se acercarían meteoritos de gran tamaño a la tierra y que solo era cuestión de horas para que comenzaran a llegar. El gobierno ya tenía preparado la iniciativa "IRON FIST", que consistía en los proyectiles más letales de la tierra y nuestra única salvación.
+                    <div class="BOTONES_2">
+                        <div class="Boton_preparado" onclick="Mover_3()">¿Estás preparado?</div>
+                        <div class="Contenedor_narracion" id="Contenedor_narracion">
+                            <i class="fas fa-play" id="VOLUMEN"></i><i class="fas fa-pause" id="PAUSE"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="Contenedor_Video_Holograma" id="Imagen">
-                <video autoplay loop muted playsinline class="Video_Narrativa" poster="IMG/Metioritos_Callendo.jpg">
-                    <source src="IMG/cinematica.mp4" type="video/mp4">
-                </video>
-                <div class="Scanlines_Overlay"></div>
+                
+                <div class="Contenedor_Video_Holograma" id="Imagen">
+                    <video autoplay loop muted playsinline class="Video_Narrativa" poster="IMG/Metioritos_Callendo.jpg">
+                        <source src="IMG/cinematica.mp4" type="video/mp4">
+                    </video>
+                    <div class="Scanlines_Overlay"></div>
+                </div>
             </div>
         </section>
 
-        <!--SECCION - 5 (JUEGO) -->
+        <!-- SECCION 4: JUEGO GENERAL -->
         <section class="Seccion_Juego" id="Seccion_Juego">
             <h1 class="Tituloar_Juego_5">¡ES HORA DE JUGAR!</h1>
 
             <!-- NIVEL 1 -->
             <div id="NIVEL_01" class="Nivel_Contenedor">
+                <!-- ERROR SOLUCIONADO: Se eliminó la clase "Contenedor" de la cabecera -->
                 <div class="Cabezera">
                     <div class="Tiempo">
                         <h3>TIEMPO</h3><span id="Tiempo">70</span>
@@ -116,9 +113,9 @@
                         <div class="Contenedor_Mensaje_Star" id="Contenedor_Mensaje_Star">
                             <h1 class="Texo" id="Texo">¿LISTO PARA SALVAR<br> EL MUNDO? -> LVL: 1</h1>
                             <div class="Dificultad_Flex">
-                                <img src="IMG/Pez_Globo.gif" class="Img_Dificultad" id="chems1">
+                                <img src="IMG/Pez_Globo.gif" class="Img_Dificultad">
                                 <h1 class="Pollo">Dificultad: Pez globo</h1>
-                                <img src="IMG/Pez_Globo.gif" class="Img_Dificultad" id="chems2">
+                                <img src="IMG/Pez_Globo.gif" class="Img_Dificultad">
                             </div>
                             <div class="Play" id="Play">JUGAR</div>
                         </div>
@@ -132,7 +129,8 @@
             </div>
 
             <!-- NIVEL 2 -->
-            <div id="NIVEL_02" class="Nivel_Contenedor" style="display: none;">
+            <div id="NIVEL_02" class="Nivel_Contenedor">
+                <!-- ERROR SOLUCIONADO: Se eliminó la clase "Contenedorlvl2" de la cabecera -->
                 <div class="Cabezeralvl2">
                     <div class="Tiempolvl2">
                         <h3>TIEMPO</h3><span id="Tiempolvl2">60</span>
@@ -153,14 +151,15 @@
                     <div class="Limitelvl2"></div>
 
                     <div class="Startlvl2" id="Startlvl2">
-                        <h1 class="Texolvl2" id="Texolvl2">¿LISTO PARA SALVAR<br> EL MUNDO? -> LVL: 2 </h1>
-                        <div class="Dificultad_Flex">
-                            <img src="IMG/Tiburon.gif" class="Img_Dificultad">
-                            <h1 class="Pollo Dificultad_Text_2">&nbsp;Dificultad : Tiburón&nbsp;</h1>
-                            <img src="IMG/Tiburon.gif" class="Img_Dificultad">
+                        <div class="Contenedor_Mensaje_Star">
+                            <h1 class="Texolvl2" id="Texolvl2">¿LISTO PARA SALVAR<br> EL MUNDO? -> LVL: 2 </h1>
+                            <div class="Dificultad_Flex" id="Dificultad">
+                                <img src="IMG/Tiburon.gif" class="Img_Dificultad">
+                                <h1 class="Pollo Dificultad_Text_2">&nbsp;Dificultad : Tiburón&nbsp;</h1>
+                                <img src="IMG/Tiburon.gif" class="Img_Dificultad">
+                            </div>
+                            <div class="Playlvl2" id="Playlvl2">JUGAR</div>
                         </div>
-                        <br>
-                        <div class="Playlvl2" id="Playlvl2">JUGAR</div>
                         <div id="Contenedor_contadorlvl2"><span id="RGBlvl2"></span></div>
                     </div>
 
@@ -177,14 +176,14 @@
             </div>
 
             <!-- NIVEL 3 -->
-            <div id="NIVEL3" class="Nivel_Contenedor" style="display: none;">
+            <div id="NIVEL3" class="Nivel_Contenedor">
+                <!-- ERROR SOLUCIONADO: Se eliminó la clase "Contenedorlvl3" de la cabecera -->
                 <div class="Cabezeralvl3">
                     <div class="Tiempolvl3">
                         <h3>TIEMPO</h3><span id="Tiempolvl3" class="Frenesi_Reloj">50</span>
                     </div>
                     <div class="Puntajelvl3">
-                        <h3>PUNTAJE</h3>
-                        <span id="Puntajelvl3">0 / 20</span>
+                        <h3>PUNTAJE</h3><span id="Puntajelvl3">0 / 20</span>
                     </div>
                     <div class="Pauselvl3" id="Pauselvl3">
                         <h3>PAUSE / REANUDAR</h3>
@@ -200,14 +199,15 @@
                     <div class="Limitelvl3"></div>
 
                     <div class="Startlvl3" id="Startlvl3">
-                        <h1 class="Textolvl3" id="Textolvl3">¿LISTO PARA SALVAR<br> EL MUNDO? -> LVL: 3</h1> <br>
-                        
-                        <div class="Dificultad_Flex">
-                            <img src="IMG/Megalodon.gif" class="Img_Dificultad">
-                            <h1 class="Pollo Dificultad_Text_3">Dificultad: Megalodon</h1>
-                            <img src="IMG/Megalodon.gif" class="Img_Dificultad">
+                        <div class="Contenedor_Mensaje_Star">
+                            <h1 class="Textolvl3" id="Textolvl3">¿LISTO PARA SALVAR<br> EL MUNDO? -> LVL: 3</h1>
+                            <div class="Dificultad_Flex" id="Dificultadlvl3">
+                                <img src="IMG/Megalodon.gif" class="Img_Dificultad">
+                                <h1 class="Pollo Dificultad_Text_3">Dificultad: Megalodon</h1>
+                                <img src="IMG/Megalodon.gif" class="Img_Dificultad">
+                            </div>
+                            <div class="Playlvl3" id="Playlvl3">JUGAR</div>
                         </div>
-                        <div class="Playlvl3" id="Playlvl3">JUGAR</div>
                         <div id="Contenedor_contadorlvl3"><span id="RGBlvl3"></span></div>
                     </div>
 
@@ -261,8 +261,8 @@
 
                 <div class="Nada" id="Nada">
                     <div class="Caja_Text_Lvl">
-                        <h2>Una vez completes este nivel, se habilitará la opción "SIGUIENTE".</h2>
-                        <p>Recuerda que los niveles son progresivos y mejorarán tu nivel de reacción ante estímulos y mucho más importante, te dará una gran sorpresa al final, así que recuerda no perdértela y no parar de intentar.</p>
+                        <h2 id="Siguiente_Texto_H2">Una vez completes este nivel, se habilitará la opción "SIGUIENTE".</h2>
+                        <p id="Siguiente_Texto_P">Recuerda que los niveles son progresivos y mejorarán tu nivel de reacción ante estímulos y mucho más importante, te dará una gran sorpresa al final, así que recuerda no perdértela y no parar de intentar.</p>
                     </div>
                     <div class="NEXT" id="NEXT">SIGUIENTE NIVEL <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></div>
                 </div>
@@ -270,7 +270,6 @@
         </section>
     </section>
 
-    <!--llamado al script js-->
     <script src="JavaScript.js"></script>
 </body>
 </html>

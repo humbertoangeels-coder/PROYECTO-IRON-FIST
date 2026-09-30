@@ -54,11 +54,11 @@ function JUEGOlvl2() {
         document.getElementById("Fondo_Ciberpunk").pause();
         document.getElementById("Triunfo").play();
         
-        document.getElementById("NEXT").addEventListener('click', () => {
-            document.getElementById("NIVEL_01").style.display = "none";
+        document.getElementById("NEXT").onclick = () => {
             document.getElementById("NIVEL_02").style.display = "none";
             document.getElementById("NIVEL3").style.display = "flex";
-        });
+            document.getElementById("NEXT").onclick = null;
+        };
 
         detenerMeteoritosLvl2();
         document.getElementById("GanastePantallaLvL2").style.display = "flex";
@@ -122,7 +122,7 @@ function JUEGOlvl2() {
     }
 
     function checkPerdisteLvl2() {
-        if (nivel2Terminado || isPaused2) return;
+        if (nivel2Terminado || isPaused2) return; // FIX DE PAUSA APLICADO
         let m1 = document.getElementById("Meteioritolvl2");
         let m2 = document.getElementById("Meteiorito2lvl2");
         let m3 = document.getElementById("Meteiorito3lvl2");
