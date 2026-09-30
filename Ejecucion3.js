@@ -1,200 +1,190 @@
 let Tiempolvl3 = 50;
 let Puntajelvl3 = 0;
-let nivel3Terminado = false; // CANDADO BUG DOBLE VICTORIA
-let Intervalo_Dirlvl3, Intervalo_Dir2lvl3, Intervalo_Dir3lvl3, Intervalo_Dir4lvl3, Restar_Tiempolvl3, Pause_offlvl3;
+let nivel3Terminado = false;
+let Intervalo_Dirlvl3, Intervalo_Dir2lvl3, Intervalo_Dir3lvl3, Intervalo_Dir4lvl3, Restar_Tiempolvl3;
+let perdisteLooplvl3;
+let Arranque_1, Arranque_2, Arranque_3, Arranque_4;
 
 function JUEGOlvl3() {
+    nivel3Terminado = false;
+
     function Tiempo_Disminurlvl3() { 
         if (nivel3Terminado) return;
         Tiempolvl3--;
         let relojDom = document.getElementById("Tiempolvl3");
         relojDom.innerHTML = Tiempolvl3;
         
-        // MODO FRENESÍ: Faltando 10 segundos
-        if (Tiempolvl3 <= 10) {
-            relojDom.classList.add("Frenesi");
-        } else {
-            relojDom.classList.remove("Frenesi");
-        }
+        if (Tiempolvl3 <= 10) relojDom.classList.add("Frenesi");
+        else relojDom.classList.remove("Frenesi");
 
         if (Tiempolvl3 <= 0) {
-            Tiempolvl3 = 50;
-            Puntajelvl3 = 0;
+            document.getElementById("Perdiste_sound").play();
             alert("EL TIEMPO SE AGOTÓ. LA TIERRA HA SIDO DESTRUIDA.");
+            reiniciarEstadoLvl3();
         }
     }
     Restar_Tiempolvl3 = setInterval(Tiempo_Disminurlvl3, 1000);
 
-    document.getElementById("Meteoritolvl3").addEventListener('mouseover', Aumentar_Puntoslvl3);
-    document.getElementById("Meteorito2lvl3").addEventListener('mouseover', Aumentar_Puntoslvl3);
-    document.getElementById("Meteorito3lvl3").addEventListener('mouseover', Aumentar_Puntoslvl3);
-    document.getElementById("Meteorito4lvl3").addEventListener('mouseover', Aumentar_Puntoslvl3);
+    const meteoritos = ['Meteoritolvl3', 'Meteorito2lvl3', 'Meteorito3lvl3', 'Meteorito4lvl3'];
+    meteoritos.forEach(id => {
+        let el = document.getElementById(id);
+        let newEl = el.cloneNode(true);
+        el.parentNode.replaceChild(newEl, el);
+        newEl.addEventListener('mouseover', Aumentar_Puntoslvl3);
+        newEl.addEventListener('mouseover', () => Explulsarlvl3(newEl.id));
+    });
 
     function Aumentar_Puntoslvl3() {
-        if (nivel3Terminado) return; // BLOQUEA CLICS EXTRA
-
-        Puntajelvl3 += 500; // SISTEMA ARCADE: 500 Puntos por impacto
+        if (nivel3Terminado) return;
+        Puntajelvl3 += 500; 
         document.getElementById("Puntajelvl3").innerHTML = Puntajelvl3 + " / 2000";
         
         if (Puntajelvl3 >= 2000) { 
-            nivel3Terminado = true; 
-            Puntajelvl3 = 0;
-            Tiempolvl3 = 50;
-            
-            function Contactos(){
-                Swal.fire({
-                    title : '¡MISIÓN CUMPLIDA! <br> Grupo Omega<br><br><img src="IMG/Logo_Omega.png" width = "120px">',
-                    html: '<b style="color: cyan;">Sabía que lo lograrías. La humanidad está a salvo por ahora... prepárate para IRON FIST 2. <br><br> CONTACTOS:<br><br> 74199761@certus.edu.pe <br> 76159606@certus.edu.pe <br> 61031081@certus.edu.pe <br> </b>',
-                    icon: 'success', // LIBRERIA CORREGIDA
-                    background: '#000',
-                    color: '#fff',
-                    confirmButtonText: 'ENTENDIDO',
-                    width: '50%', height: '80%', timer: 100000, timerProgressbar: true,
-                    allowOutsideClick: true, allowEscapeKey: false, allowEnterKey: false, stopKeydownPropagation: false,
-                });
-            }
-            setTimeout(Contactos, 15000);
-
-            document.getElementById("Fondo_Ciberpunk").pause();
-            document.getElementById("Triunfo").play();
-
-            function Ganaste_Pantallalvl3(){
-                document.getElementById("Meteoritolvl3").style.left = "-70%";
-                document.getElementById("Meteoritolvl3").style.transition = "0s";
-                document.getElementById("Meteorito2lvl3").style.left = "-70%";
-                document.getElementById("Meteorito2lvl3").style.transition = "0s";
-                document.getElementById("Meteorito3lvl3").style.left = "-70%";
-                document.getElementById("Meteorito3lvl3").style.transition = "0s";
-                document.getElementById("Meteorito4lvl3").style.left = "-70%";
-                document.getElementById("Meteorito4lvl3").style.transition = "0s";
-            }
-            Ganaste_Pantallalvl3(); // BUCLE INFINITO DE MEMORIA REPARADO
-
-            clearInterval(Intervalo_Dirlvl3); clearInterval(Intervalo_Dir2lvl3);
-            clearInterval(Intervalo_Dir3lvl3); clearInterval(Intervalo_Dir4lvl3);
-            clearInterval(Restar_Tiempolvl3);
-            document.getElementById("Musica_Final").play();
-
-            document.getElementById("Pantalla_Ovnislvl3").style.left = "7%";
-            document.getElementById("Pantalla_Ovnislvl3").style.transition = "6s";
-            document.getElementById("Pantalla_Nodrizalvl3").style.left = "10%";
-            document.getElementById("Pantalla_Nodrizalvl3").style.transition = "5s";
-            document.getElementById("Pantalla_Ovnis2lvl3").style.left = "7%";
-            document.getElementById("Pantalla_Ovnis2lvl3").style.transition = "6s";
-
-            function Creditoslvl3() {
-                document.getElementById("Pantalla_creditoslvl3").style.background = "black";
-                document.getElementById("Creditoslvl3").style.top = "-15%";
-                document.getElementById("Creditoslvl3").style.transition = "10s";
-                document.getElementById("Proximolvl3").style.bottom = "-34%";
-                document.getElementById("Proximolvl3").style.transition = "15s";
-            }
-            setTimeout(Creditoslvl3, 5000);
+            terminarJuegoLvl3();
         }
     }
 
-    // CORRECCIÓN LÍMITE Y: Math.random() * 430
-    function Meteorito_Direccionlvl3() {
-        document.getElementById("Meteoritolvl3").style.left = "80%";
-        document.getElementById("Meteoritolvl3").style.top = Math.round(Math.random() * 430) + "px";
-        document.getElementById("Meteoritolvl3").style.transition = "1.9s";
-    }
-    setTimeout(Meteorito_Direccionlvl3, 2200);
-    Intervalo_Dirlvl3 = setInterval(Meteorito_Direccionlvl3, 2950);
+    function terminarJuegoLvl3() {
+        nivel3Terminado = true; 
+        Puntajelvl3 = 0;
+        Tiempolvl3 = 50;
+        
+        setTimeout(() => {
+            Swal.fire({
+                title : '¡MISIÓN CUMPLIDA! <br> Grupo Omega<br><br><img src="IMG/Logo_Omega.png" width = "120px">',
+                html: '<b style="color: cyan;">Sabía que lo lograrías. La humanidad está a salvo por ahora... prepárate para IRON FIST 2. <br><br> CONTACTOS:<br><br> tu_correo_aqui@gmail.com <br> correo2@gmail.com <br> correo3@gmail.com <br> </b>',
+                icon: 'success',
+                background: '#000',
+                color: '#fff',
+                confirmButtonText: 'ENTENDIDO',
+                width: '50%', height: '80%', timer: 100000, timerProgressbar: true,
+                allowOutsideClick: true, allowEscapeKey: false, allowEnterKey: false, stopKeydownPropagation: false,
+            });
+        }, 15000);
 
-    function Meteorito_Direccion2lvl3() {
-        document.getElementById("Meteorito2lvl3").style.left = "80%";
-        document.getElementById("Meteorito2lvl3").style.top = Math.round(Math.random() * 430) + "px";
-        document.getElementById("Meteorito2lvl3").style.transition = "1.9s";
-    }
-    setTimeout(Meteorito_Direccion2lvl3, 2660);
-    Intervalo_Dir2lvl3 = setInterval(Meteorito_Direccion2lvl3, 2750);
+        document.getElementById("Fondo_Ciberpunk").pause();
+        document.getElementById("Triunfo").play();
 
-    function Meteorito_Direccion3lvl3() {
-        document.getElementById("Meteorito3lvl3").style.left = "80%";
-        document.getElementById("Meteorito3lvl3").style.top = Math.round(Math.random() * 430) + "px";
-        document.getElementById("Meteorito3lvl3").style.transition = "1.9s";
-    }
-    setTimeout(Meteorito_Direccion3lvl3, 2900);
-    Intervalo_Dir3lvl3 = setInterval(Meteorito_Direccion3lvl3, 2550);
+        detenerMeteoritosLvl3();
 
-    function Meteorito_Direccion4lvl3() {
-        document.getElementById("Meteorito4lvl3").style.left = "80%";
-        document.getElementById("Meteorito4lvl3").style.top = Math.round(Math.random() * 430) + "px";
-        document.getElementById("Meteorito4lvl3").style.transition = "1.9s";
-    }
-    setTimeout(Meteorito_Direccion4lvl3, 3100);
-    Intervalo_Dir4lvl3 = setInterval(Meteorito_Direccion4lvl3, 2150);
+        document.getElementById("Musica_Final").play();
+        document.getElementById("Pantalla_Ovnislvl3").style.left = "7%";
+        document.getElementById("Pantalla_Ovnislvl3").style.transition = "6s";
+        document.getElementById("Pantalla_Nodrizalvl3").style.left = "10%";
+        document.getElementById("Pantalla_Nodrizalvl3").style.transition = "5s";
+        document.getElementById("Pantalla_Ovnis2lvl3").style.left = "7%";
+        document.getElementById("Pantalla_Ovnis2lvl3").style.transition = "6s";
 
-    document.getElementById("Meteoritolvl3").addEventListener('mouseover', Expulsarlvl3);
-    document.getElementById("Meteorito2lvl3").addEventListener('mouseover', Expulsar2lvl3);
-    document.getElementById("Meteorito3lvl3").addEventListener('mouseover', Expulsar3lvl3);
-    document.getElementById("Meteorito4lvl3").addEventListener('mouseover', Expulsar4lvl3);
-
-    function Expulsarlvl3() {
-        document.getElementById("Puntos_sound").play();
-        document.getElementById("Meteoritolvl3").style.left = "-500px";
-        document.getElementById("Meteoritolvl3").style.top = Math.round(Math.random() * 430) + "px";
-        document.getElementById("Meteoritolvl3").style.transition = "1.7s";
-    }
-    function Expulsar2lvl3() {
-        document.getElementById("Punto2").play();
-        document.getElementById("Meteorito2lvl3").style.left = "-500px";
-        document.getElementById("Meteorito2lvl3").style.top = Math.round(Math.random() * 430) + "px";
-        document.getElementById("Meteorito2lvl3").style.transition = "1.7s";
-    }
-    function Expulsar3lvl3() {
-        document.getElementById("Punto3").play();
-        document.getElementById("Meteorito3lvl3").style.left = "-500px";
-        document.getElementById("Meteorito3lvl3").style.top = Math.round(Math.random() * 430) + "px";
-        document.getElementById("Meteorito3lvl3").style.transition = "1.7s";
-    }
-    function Expulsar4lvl3() {
-        document.getElementById("Punto4").play();
-        document.getElementById("Meteorito4lvl3").style.left = "-500px";
-        document.getElementById("Meteorito4lvl3").style.top = Math.round(Math.random() * 430) + "px";
-        document.getElementById("Meteorito4lvl3").style.transition = "1.7s";
+        setTimeout(() => {
+            document.getElementById("Pantalla_creditoslvl3").style.background = "black";
+            document.getElementById("Creditoslvl3").style.top = "-15%";
+            document.getElementById("Creditoslvl3").style.transition = "10s";
+            document.getElementById("Proximolvl3").style.bottom = "-34%";
+            document.getElementById("Proximolvl3").style.transition = "15s";
+        }, 5000);
     }
 
-    function perdistelvl3() {
-        if ((document.getElementById("Meteoritolvl3").offsetLeft > 630) ||
-            (document.getElementById("Meteorito2lvl3").offsetLeft > 630) ||
-            (document.getElementById("Meteorito3lvl3").offsetLeft > 630) ||
-            (document.getElementById("Meteorito4lvl3").offsetLeft > 630)) {
+    function detenerMeteoritosLvl3() {
+        clearInterval(Intervalo_Dirlvl3); clearInterval(Intervalo_Dir2lvl3);
+        clearInterval(Intervalo_Dir3lvl3); clearInterval(Intervalo_Dir4lvl3);
+        clearTimeout(Arranque_1); clearTimeout(Arranque_2);
+        clearTimeout(Arranque_3); clearTimeout(Arranque_4);
+        clearInterval(Restar_Tiempolvl3);
+        clearInterval(perdisteLooplvl3);
 
-            // SCREEN SHAKE AL PERDER
+        meteoritos.forEach(id => {
+            let el = document.getElementById(id);
+            if(el) {
+                el.style.left = "-70%";
+                el.style.transition = "0s";
+            }
+        });
+    }
+
+    function iniciarTrayectoriaLvl3(id, velocidad) {
+        let el = document.getElementById(id);
+        if(el){
+            let altura = Math.round(Math.random() * 430);
+            el.style.left = "80%";
+            el.style.top = altura + "px";
+            el.style.transition = velocidad + "s";
+        }
+    }
+
+    Arranque_1 = setTimeout(() => iniciarTrayectoriaLvl3('Meteoritolvl3', 1.9), 2200);
+    Intervalo_Dirlvl3 = setInterval(() => iniciarTrayectoriaLvl3('Meteoritolvl3', 1.9), 2950);
+
+    Arranque_2 = setTimeout(() => iniciarTrayectoriaLvl3('Meteorito2lvl3', 1.9), 2660);
+    Intervalo_Dir2lvl3 = setInterval(() => iniciarTrayectoriaLvl3('Meteorito2lvl3', 1.9), 2750);
+
+    Arranque_3 = setTimeout(() => iniciarTrayectoriaLvl3('Meteorito3lvl3', 1.9), 2900);
+    Intervalo_Dir3lvl3 = setInterval(() => iniciarTrayectoriaLvl3('Meteorito3lvl3', 1.9), 2550);
+
+    Arranque_4 = setTimeout(() => iniciarTrayectoriaLvl3('Meteorito4lvl3', 1.9), 3100);
+    Intervalo_Dir4lvl3 = setInterval(() => iniciarTrayectoriaLvl3('Meteorito4lvl3', 1.9), 2150);
+
+    function Explulsarlvl3(id) {
+        let sound;
+        if (id === 'Meteoritolvl3') sound = document.getElementById("Puntos_sound");
+        else if (id === 'Meteorito2lvl3') sound = document.getElementById("Punto2");
+        else if (id === 'Meteorito3lvl3') sound = document.getElementById("Punto3");
+        else sound = document.getElementById("Punto4");
+
+        if(sound) {
+            sound.currentTime = 0;
+            sound.play();
+        }
+        let el = document.getElementById(id);
+        let altura = Math.round(Math.random() * 430);
+        el.style.left = "-500px";
+        el.style.top = altura + "px";
+        el.style.transition = "1.7s";
+    }
+
+    function checkPerdisteLvl3() {
+        if (nivel3Terminado) return;
+        let m1 = document.getElementById("Meteoritolvl3");
+        let m2 = document.getElementById("Meteorito2lvl3");
+        let m3 = document.getElementById("Meteorito3lvl3");
+        let m4 = document.getElementById("Meteorito4lvl3");
+
+        if ((m1 && m1.offsetLeft > 630) || (m2 && m2.offsetLeft > 630) || (m3 && m3.offsetLeft > 630) || (m4 && m4.offsetLeft > 630)) {
+            nivel3Terminado = true;
             document.getElementById("Tablero_Juegolvl3").classList.add("shake-anim");
-            setTimeout(() => { document.getElementById("Tablero_Juegolvl3").classList.remove("shake-anim"); }, 500);
+            setTimeout(() => document.getElementById("Tablero_Juegolvl3").classList.remove("shake-anim"), 500);
 
             document.getElementById("Perdiste_sound").play();
-
-            document.getElementById("Meteoritolvl3").style.left = "-70%"; document.getElementById("Meteoritolvl3").style.transition = "0s";
-            document.getElementById("Meteorito2lvl3").style.left = "-70%"; document.getElementById("Meteorito2lvl3").style.transition = "0s";
-            document.getElementById("Meteorito3lvl3").style.left = "-70%"; document.getElementById("Meteorito3lvl3").style.transition = "0s";
-            document.getElementById("Meteorito4lvl3").style.left = "-70%"; document.getElementById("Meteorito4lvl3").style.transition = "0s";
-            
-            // ERROR COPY PASTE REPARADO: Se llama a todos los meteoritos
-            setTimeout(Meteorito_Direccionlvl3, 2000);
-            setTimeout(Meteorito_Direccion2lvl3, 2000);
-            setTimeout(Meteorito_Direccion3lvl3, 2600);
-            setTimeout(Meteorito_Direccion4lvl3, 2900);
-
-            Tiempolvl3 = 50;
-            Puntajelvl3 = 0;
-            document.getElementById("Puntajelvl3").innerHTML = "0 / 2000";
-            document.getElementById("Tiempolvl3").classList.remove("Frenesi");
-            nivel3Terminado = false; // Quita el candado
-        } else {
-            document.getElementById("Meteoritolvl3").style.transition = "1.9s";
-            document.getElementById("Meteorito2lvl3").style.transition = "1.9s";
-            document.getElementById("Meteorito3lvl3").style.transition = "1.9s";
-            document.getElementById("Meteorito4lvl3").style.transition = "1.9s";
+            alert("YA ES DEMASIADO TARDE LOS METEORITOS DESTRUYERON GRAN PARTE DEL CONTINENTE.");
+            reiniciarEstadoLvl3();
         }
     }
-    setInterval(perdistelvl3, 10); // Optimizado a 10ms en lugar de 1ms para mejor rendimiento
+    perdisteLooplvl3 = setInterval(checkPerdisteLvl3, 20);
+
+    function reiniciarEstadoLvl3() {
+        detenerMeteoritosLvl3();
+        Tiempolvl3 = 50;
+        Puntajelvl3 = 0;
+        document.getElementById("Puntajelvl3").innerHTML = "0 / 2000";
+        document.getElementById("Tiempolvl3").classList.remove("Frenesi");
+        nivel3Terminado = false;
+        
+        Arranque_1 = setTimeout(() => iniciarTrayectoriaLvl3('Meteoritolvl3', 1.9), 2000);
+        Intervalo_Dirlvl3 = setInterval(() => iniciarTrayectoriaLvl3('Meteoritolvl3', 1.9), 2950);
+
+        Arranque_2 = setTimeout(() => iniciarTrayectoriaLvl3('Meteorito2lvl3', 1.9), 2000);
+        Intervalo_Dir2lvl3 = setInterval(() => iniciarTrayectoriaLvl3('Meteorito2lvl3', 1.9), 2750);
+
+        Arranque_3 = setTimeout(() => iniciarTrayectoriaLvl3('Meteorito3lvl3', 1.9), 2600);
+        Intervalo_Dir3lvl3 = setInterval(() => iniciarTrayectoriaLvl3('Meteorito3lvl3', 1.9), 2550);
+
+        Arranque_4 = setTimeout(() => iniciarTrayectoriaLvl3('Meteorito4lvl3', 1.9), 2900);
+        Intervalo_Dir4lvl3 = setInterval(() => iniciarTrayectoriaLvl3('Meteorito4lvl3', 1.9), 2150);
+
+        Restar_Tiempolvl3 = setInterval(Tiempo_Disminurlvl3, 1000);
+        perdisteLooplvl3 = setInterval(checkPerdisteLvl3, 20);
+    }
 }
 
-// EVENTOS DE START Y PAUSA
 document.getElementById("Playlvl3").addEventListener('click', PLAYlvl3);
 let Conteolvl3 = 4;
 
@@ -204,55 +194,83 @@ function PLAYlvl3() {
     document.getElementById("Playlvl3").style.left = "-900px";
     document.getElementById("Dificultadlvl3").style.left = "-900px";
     
-    function ARRANCARlvl3(){ JUEGOlvl3(); }
-    setTimeout(ARRANCARlvl3, 4100);
+    setTimeout(JUEGOlvl3, 4100);
     
-    function ESPERARlvl3() {
-        function Cuenta_rglvl3() {
-            Conteolvl3--;
-            document.getElementById("RGBlvl3").innerHTML = Conteolvl3;
-            if (Conteolvl3 === -1) {
-                document.getElementById("Contenedor_contadorlvl3").style.display = "none";
-                function Borrarlvl3() {
-                    document.getElementById("Startlvl3").style.display = "none";
-                    DETENER_JUEGOlvl3();
-                }
-                setTimeout(Borrarlvl3, 500);
-            }
+    let cuentaRegresiva = setInterval(() => {
+        Conteolvl3--;
+        document.getElementById("RGBlvl3").innerHTML = Conteolvl3;
+        if (Conteolvl3 === -1) {
+            clearInterval(cuentaRegresiva);
+            document.getElementById("Contenedor_contadorlvl3").style.display = "none";
+            document.getElementById("Startlvl3").style.display = "none";
+            DETENER_JUEGOlvl3();
         }
-        setInterval(Cuenta_rglvl3, 1000);
-    }
-    setTimeout(ESPERARlvl3, 350);
+    }, 1000);
 }
 
+let ActivoLvl3 = true;
 function DETENER_JUEGOlvl3() {
-    document.getElementById("Pauselvl3").addEventListener('click', PAUSElvl3);
-    let Activolvl3 = 1;
+    document.getElementById("Pauselvl3").addEventListener('click', () => {
+        if (nivel3Terminado) return;
+        const meteoritos = ['Meteoritolvl3', 'Meteorito2lvl3', 'Meteorito3lvl3', 'Meteorito4lvl3'];
 
-    function PAUSElvl3() {
-        if (Activolvl3 === 1) {
-            document.getElementById("Pausa_Pantallalvl3").style.display = "table";
-            document.getElementById("Tiempolvl3").innerHTML = Tiempolvl3;
+        if (ActivoLvl3) {
+            document.getElementById("Pausa_Pantallalvl3").style.display = "flex";
             document.getElementById("Fondo_Ciberpunk").pause();
             
-            function Meteorito_detenerlvl3() {
-                document.getElementById("Meteoritolvl3").style.left = document.getElementById("Meteoritolvl3").offsetLeft + "px";
-                document.getElementById("Meteorito2lvl3").style.left = document.getElementById("Meteorito2lvl3").offsetLeft + "px";
-                document.getElementById("Meteorito3lvl3").style.left = document.getElementById("Meteorito3lvl3").offsetLeft + "px";
-                document.getElementById("Meteorito4lvl3").style.left = document.getElementById("Meteorito4lvl3").offsetLeft + "px";
+            clearInterval(Restar_Tiempolvl3);
+            clearInterval(Intervalo_Dirlvl3); clearInterval(Intervalo_Dir2lvl3);
+            clearInterval(Intervalo_Dir3lvl3); clearInterval(Intervalo_Dir4lvl3);
+            clearTimeout(Arranque_1); clearTimeout(Arranque_2);
+            clearTimeout(Arranque_3); clearTimeout(Arranque_4);
+            clearInterval(perdisteLooplvl3); // SE DETIENE GAME OVER
 
-                document.getElementById("Meteoritolvl3").style.top = document.getElementById("Meteoritolvl3").offsetTop + "px";
-                document.getElementById("Meteorito2lvl3").style.top = document.getElementById("Meteorito2lvl3").offsetTop + "px";
-                document.getElementById("Meteorito3lvl3").style.top = document.getElementById("Meteorito3lvl3").offsetTop + "px";
-                document.getElementById("Meteorito4lvl3").style.top = document.getElementById("Meteorito4lvl3").offsetTop + "px";
-            }
-            Pause_offlvl3 = setInterval(Meteorito_detenerlvl3, 10);
-            Activolvl3 = 2;
+            meteoritos.forEach(id => {
+                let el = document.getElementById(id);
+                if(el) {
+                    let comp = window.getComputedStyle(el);
+                    el.style.transition = "none";
+                    el.style.left = comp.left;
+                    el.style.top = comp.top;
+                }
+            });
         } else { 
             document.getElementById("Pausa_Pantallalvl3").style.display = "none";
             document.getElementById("Fondo_Ciberpunk").play();
-            clearInterval(Pause_offlvl3);
-            Activolvl3 = 1;
+            
+            Restar_Tiempolvl3 = setInterval(() => {
+                Tiempolvl3--;
+                document.getElementById("Tiempolvl3").innerHTML = Tiempolvl3;
+            }, 1000);
+
+            // SE REANUDAN LOS METEORITOS Y EL GAMEOVER
+            Intervalo_Dirlvl3 = setInterval(() => {
+                let el = document.getElementById('Meteoritolvl3');
+                if(el) { el.style.transition = "1.9s"; el.style.left = "80%"; }
+            }, 2950);
+            Intervalo_Dir2lvl3 = setInterval(() => {
+                let el = document.getElementById('Meteorito2lvl3');
+                if(el) { el.style.transition = "1.9s"; el.style.left = "80%"; }
+            }, 2750);
+            Intervalo_Dir3lvl3 = setInterval(() => {
+                let el = document.getElementById('Meteorito3lvl3');
+                if(el) { el.style.transition = "1.9s"; el.style.left = "80%"; }
+            }, 2550);
+            Intervalo_Dir4lvl3 = setInterval(() => {
+                let el = document.getElementById('Meteorito4lvl3');
+                if(el) { el.style.transition = "1.9s"; el.style.left = "80%"; }
+            }, 2150);
+
+            perdisteLooplvl3 = setInterval(checkPerdisteLvl3, 20);
+
+            meteoritos.forEach(id => {
+                let el = document.getElementById(id);
+                if(el) {
+                    el.style.transition = "1.9s";
+                    el.style.left = "80%";
+                }
+            });
         }
-    }
+        ActivoLvl3 = !ActivoLvl3;
+    });
 }
