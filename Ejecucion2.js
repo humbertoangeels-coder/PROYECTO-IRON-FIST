@@ -1,16 +1,19 @@
 let Tiempolvl2 = 61;
 let Puntajelvl2 = 0;
-const metaPuntosLvl2 = 34;
+const metaPuntosLvl2 = 15;
 let nivel2Terminado = false;
+let isPaused2 = false;
+let juegoIniciadoLvl2 = false;
 
 let Restar_Tiempolvl2, Reanudar_trayectorialvl2, Reanudar_trayectoria2lvl2, Reanudar_trayectoria3lvl2;
 let Activador_iniciallvl2, Activador_inicial2lvl2, Activador_inicial3lvl2, perdisteLoopLvl2;
 
 function JUEGOlvl2() {
     nivel2Terminado = false;
+    isPaused2 = false;
 
     function Tiempo_Disminurlvl2() {
-        if (nivel2Terminado) return;
+        if (nivel2Terminado || isPaused2) return;
         Tiempolvl2--;
         document.getElementById("Tiempolvl2").innerHTML = Tiempolvl2;
         if (Tiempolvl2 <= 0) {
@@ -31,7 +34,7 @@ function JUEGOlvl2() {
     });
 
     function Aumentar_Puntoslvl2() {
-        if (nivel2Terminado) return;
+        if (nivel2Terminado || isPaused2) return;
         Puntajelvl2++;
         document.getElementById("Puntajelvl2").innerHTML = Puntajelvl2 + " / " + metaPuntosLvl2;
         
@@ -69,21 +72,13 @@ function JUEGOlvl2() {
     }
 
     function detenerMeteoritosLvl2() {
-        clearInterval(Reanudar_trayectorialvl2);
-        clearTimeout(Activador_iniciallvl2);
-        clearInterval(Reanudar_trayectoria2lvl2);
-        clearTimeout(Activador_inicial2lvl2);
-        clearInterval(Reanudar_trayectoria3lvl2);
-        clearTimeout(Activador_inicial3lvl2);
-        clearInterval(Restar_Tiempolvl2);
-        clearInterval(perdisteLoopLvl2);
+        clearInterval(Reanudar_trayectorialvl2); clearInterval(Reanudar_trayectoria2lvl2); clearInterval(Reanudar_trayectoria3lvl2);
+        clearTimeout(Activador_iniciallvl2); clearTimeout(Activador_inicial2lvl2); clearTimeout(Activador_inicial3lvl2);
+        clearInterval(Restar_Tiempolvl2); clearInterval(perdisteLoopLvl2);
 
         meteoritos.forEach(id => {
             let el = document.getElementById(id);
-            if(el) {
-                el.style.left = "-70%";
-                el.style.transition = "0s";
-            }
+            if(el) { el.style.left = "-70%"; el.style.transition = "0s"; }
         });
     }
 
@@ -112,10 +107,7 @@ function JUEGOlvl2() {
         else if (id === 'Meteiorito2lvl2') sound = document.getElementById("Punto2");
         else sound = document.getElementById("Punto3");
         
-        if(sound) {
-            sound.currentTime = 0;
-            sound.play(); 
-        }
+        if(sound) { sound.currentTime = 0; sound.play(); }
         let el = document.getElementById(id);
         let altura = Math.round(Math.random() * 450);
         el.style.left = "-500px";
@@ -124,7 +116,7 @@ function JUEGOlvl2() {
     }
 
     function checkPerdisteLvl2() {
-        if (nivel2Terminado) return;
+        if (nivel2Terminado || isPaused2) return;
         let m1 = document.getElementById("Meteioritolvl2");
         let m2 = document.getElementById("Meteiorito2lvl2");
         let m3 = document.getElementById("Meteiorito3lvl2");
@@ -140,8 +132,7 @@ function JUEGOlvl2() {
 
     function reiniciarEstadoLvl2() {
          detenerMeteoritosLvl2();
-         Tiempolvl2 = 61;
-         Puntajelvl2 = 0;
+         Tiempolvl2 = 61; Puntajelvl2 = 0;
          document.getElementById("Tiempolvl2").innerHTML = 60;
          document.getElementById("Puntajelvl2").innerHTML = "0 / " + metaPuntosLvl2;
          nivel2Terminado = false;
@@ -161,9 +152,12 @@ function JUEGOlvl2() {
 }
 
 document.getElementById("Playlvl2").addEventListener('click', PLAYlvl2);
-let Conteolvl2 = 4;
 
 function PLAYlvl2() {
+    if (juegoIniciadoLvl2) return;
+    juegoIniciadoLvl2 = true;
+    let Conteolvl2 = 4;
+
     document.getElementById("Fondo_Ciberpunk").play();
     document.getElementById("Texolvl2").style.left = "-900px";
     document.getElementById("Playlvl2").style.left = "-900px";
@@ -183,24 +177,20 @@ function PLAYlvl2() {
     }, 1000);
 }
 
-let ActivoLvl2 = true;
 function DETENER_JUEGOlvl2() {
     document.getElementById("Pauselvl2").addEventListener('click', () => {
         if (nivel2Terminado) return;
         const meteoritos = ['Meteioritolvl2', 'Meteiorito2lvl2', 'Meteiorito3lvl2'];
+        isPaused2 = !isPaused2;
         
-       if (ActivoLvl2) {
+       if (isPaused2) {
             document.getElementById("Pausa_Pantallalvl2").style.display = "flex"; 
             document.getElementById("Fondo_Ciberpunk").pause();
             
             clearInterval(Restar_Tiempolvl2);
-            clearInterval(Reanudar_trayectorialvl2);
-            clearInterval(Reanudar_trayectoria2lvl2);
-            clearInterval(Reanudar_trayectoria3lvl2);
-            clearTimeout(Activador_iniciallvl2);
-            clearTimeout(Activador_inicial2lvl2);
-            clearTimeout(Activador_inicial3lvl2);
-            clearInterval(perdisteLoopLvl2); // SE DETIENE LA CONDICIÓN GAME OVER
+            clearInterval(Reanudar_trayectorialvl2); clearInterval(Reanudar_trayectoria2lvl2); clearInterval(Reanudar_trayectoria3lvl2);
+            clearTimeout(Activador_iniciallvl2); clearTimeout(Activador_inicial2lvl2); clearTimeout(Activador_inicial3lvl2);
+            clearInterval(perdisteLoopLvl2); 
             
             meteoritos.forEach(id => {
                 let el = document.getElementById(id);
@@ -216,36 +206,40 @@ function DETENER_JUEGOlvl2() {
             document.getElementById("Fondo_Ciberpunk").play();
             
             Restar_Tiempolvl2 = setInterval(() => {
+                if (nivel2Terminado || isPaused2) return;
                 Tiempolvl2--;
                 document.getElementById("Tiempolvl2").innerHTML = Tiempolvl2;
             }, 1000);
             
-            // SE REANUDAN LOS METEORITOS Y EL GAMEOVER
             Reanudar_trayectorialvl2 = setInterval(() => {
                 let el = document.getElementById('Meteioritolvl2');
                 if(el) { el.style.transition = "2s"; el.style.left = "80%"; }
             }, 2030);
-            
             Reanudar_trayectoria2lvl2 = setInterval(() => {
                 let el = document.getElementById('Meteiorito2lvl2');
                 if(el) { el.style.transition = "2s"; el.style.left = "80%"; }
             }, 2750);
-            
             Reanudar_trayectoria3lvl2 = setInterval(() => {
                 let el = document.getElementById('Meteiorito3lvl2');
                 if(el) { el.style.transition = "2s"; el.style.left = "80%"; }
             }, 2470);
 
-            perdisteLoopLvl2 = setInterval(checkPerdisteLvl2, 20);
+            perdisteLoopLvl2 = setInterval(() => {
+                if (nivel2Terminado || isPaused2) return;
+                let m1 = document.getElementById("Meteioritolvl2");
+                let m2 = document.getElementById("Meteiorito2lvl2");
+                let m3 = document.getElementById("Meteiorito3lvl2");
+                if ((m1 && m1.offsetLeft > 630) || (m2 && m2.offsetLeft > 630) || (m3 && m3.offsetLeft > 630)) {
+                    nivel2Terminado = true;
+                    document.getElementById("Perdiste_sound").play();
+                    alert("YA ES DEMASIADO TARDE, LOS METEORITOS DESTRUYERON GRAN PARTE DEL CONTINENTE Y LO MEJOR ES ESPERAR LO PEOR");
+                }
+            }, 20);
 
             meteoritos.forEach(id => {
                 let el = document.getElementById(id);
-                if(el) {
-                    el.style.transition = "2s";
-                    el.style.left = "80%";
-                }
+                if(el) { el.style.transition = "2s"; el.style.left = "80%"; }
             });
         }
-        ActivoLvl2 = !ActivoLvl2;
     });
 }

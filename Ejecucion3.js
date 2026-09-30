@@ -1,15 +1,20 @@
 let Tiempolvl3 = 50;
 let Puntajelvl3 = 0;
+const metaPuntosLvl3 = 20; 
 let nivel3Terminado = false;
+let isPaused3 = false;
+let juegoIniciadoLvl3 = false;
+
 let Intervalo_Dirlvl3, Intervalo_Dir2lvl3, Intervalo_Dir3lvl3, Intervalo_Dir4lvl3, Restar_Tiempolvl3;
 let perdisteLooplvl3;
 let Arranque_1, Arranque_2, Arranque_3, Arranque_4;
 
 function JUEGOlvl3() {
     nivel3Terminado = false;
+    isPaused3 = false;
 
     function Tiempo_Disminurlvl3() { 
-        if (nivel3Terminado) return;
+        if (nivel3Terminado || isPaused3) return;
         Tiempolvl3--;
         let relojDom = document.getElementById("Tiempolvl3");
         relojDom.innerHTML = Tiempolvl3;
@@ -35,11 +40,11 @@ function JUEGOlvl3() {
     });
 
     function Aumentar_Puntoslvl3() {
-        if (nivel3Terminado) return;
-        Puntajelvl3 += 500; 
-        document.getElementById("Puntajelvl3").innerHTML = Puntajelvl3 + " / 2000";
+        if (nivel3Terminado || isPaused3) return;
+        Puntajelvl3++; 
+        document.getElementById("Puntajelvl3").innerHTML = Puntajelvl3 + " / " + metaPuntosLvl3;
         
-        if (Puntajelvl3 >= 2000) { 
+        if (Puntajelvl3 >= metaPuntosLvl3) { 
             terminarJuegoLvl3();
         }
     }
@@ -52,7 +57,7 @@ function JUEGOlvl3() {
         setTimeout(() => {
             Swal.fire({
                 title : '¡MISIÓN CUMPLIDA! <br> Grupo Omega<br><br><img src="IMG/Logo_Omega.png" width = "120px">',
-                html: '<b style="color: cyan;">Sabía que lo lograrías. La humanidad está a salvo por ahora... prepárate para IRON FIST 2. <br><br> CONTACTOS:<br><br> tu_correo_aqui@gmail.com <br> correo2@gmail.com <br> correo3@gmail.com <br> </b>',
+                html: '<b style="color: cyan;">Sabía que lo lograrías. La humanidad está a salvo por ahora... prepárate para IRON FIST 2. <br><br> CONTACTOS:<br><br> humbertoangeels-coder@certus.edu.pe <br> jhonatan.palacios@certus.edu.pe <br> nathaly.valero@certus.edu.pe <br> christopher.benjamin@certus.edu.pe <br> alvaro.campos@certus.edu.pe </b>',
                 icon: 'success',
                 background: '#000',
                 color: '#fff',
@@ -89,15 +94,11 @@ function JUEGOlvl3() {
         clearInterval(Intervalo_Dir3lvl3); clearInterval(Intervalo_Dir4lvl3);
         clearTimeout(Arranque_1); clearTimeout(Arranque_2);
         clearTimeout(Arranque_3); clearTimeout(Arranque_4);
-        clearInterval(Restar_Tiempolvl3);
-        clearInterval(perdisteLooplvl3);
+        clearInterval(Restar_Tiempolvl3); clearInterval(perdisteLooplvl3);
 
         meteoritos.forEach(id => {
             let el = document.getElementById(id);
-            if(el) {
-                el.style.left = "-70%";
-                el.style.transition = "0s";
-            }
+            if(el) { el.style.left = "-70%"; el.style.transition = "0s"; }
         });
     }
 
@@ -130,10 +131,7 @@ function JUEGOlvl3() {
         else if (id === 'Meteorito3lvl3') sound = document.getElementById("Punto3");
         else sound = document.getElementById("Punto4");
 
-        if(sound) {
-            sound.currentTime = 0;
-            sound.play();
-        }
+        if(sound) { sound.currentTime = 0; sound.play(); }
         let el = document.getElementById(id);
         let altura = Math.round(Math.random() * 430);
         el.style.left = "-500px";
@@ -142,7 +140,7 @@ function JUEGOlvl3() {
     }
 
     function checkPerdisteLvl3() {
-        if (nivel3Terminado) return;
+        if (nivel3Terminado || isPaused3) return;
         let m1 = document.getElementById("Meteoritolvl3");
         let m2 = document.getElementById("Meteorito2lvl3");
         let m3 = document.getElementById("Meteorito3lvl3");
@@ -162,9 +160,8 @@ function JUEGOlvl3() {
 
     function reiniciarEstadoLvl3() {
         detenerMeteoritosLvl3();
-        Tiempolvl3 = 50;
-        Puntajelvl3 = 0;
-        document.getElementById("Puntajelvl3").innerHTML = "0 / 2000";
+        Tiempolvl3 = 50; Puntajelvl3 = 0;
+        document.getElementById("Puntajelvl3").innerHTML = "0 / " + metaPuntosLvl3;
         document.getElementById("Tiempolvl3").classList.remove("Frenesi");
         nivel3Terminado = false;
         
@@ -186,9 +183,12 @@ function JUEGOlvl3() {
 }
 
 document.getElementById("Playlvl3").addEventListener('click', PLAYlvl3);
-let Conteolvl3 = 4;
 
 function PLAYlvl3() {
+    if (juegoIniciadoLvl3) return;
+    juegoIniciadoLvl3 = true;
+    let Conteolvl3 = 4;
+
     document.getElementById("Fondo_Ciberpunk").play();
     document.getElementById("Textolvl3").style.left = "-900px";
     document.getElementById("Playlvl3").style.left = "-900px";
@@ -208,13 +208,13 @@ function PLAYlvl3() {
     }, 1000);
 }
 
-let ActivoLvl3 = true;
 function DETENER_JUEGOlvl3() {
     document.getElementById("Pauselvl3").addEventListener('click', () => {
         if (nivel3Terminado) return;
         const meteoritos = ['Meteoritolvl3', 'Meteorito2lvl3', 'Meteorito3lvl3', 'Meteorito4lvl3'];
+        isPaused3 = !isPaused3;
 
-        if (ActivoLvl3) {
+        if (isPaused3) {
             document.getElementById("Pausa_Pantallalvl3").style.display = "flex";
             document.getElementById("Fondo_Ciberpunk").pause();
             
@@ -223,7 +223,7 @@ function DETENER_JUEGOlvl3() {
             clearInterval(Intervalo_Dir3lvl3); clearInterval(Intervalo_Dir4lvl3);
             clearTimeout(Arranque_1); clearTimeout(Arranque_2);
             clearTimeout(Arranque_3); clearTimeout(Arranque_4);
-            clearInterval(perdisteLooplvl3); // SE DETIENE GAME OVER
+            clearInterval(perdisteLooplvl3); 
 
             meteoritos.forEach(id => {
                 let el = document.getElementById(id);
@@ -239,11 +239,11 @@ function DETENER_JUEGOlvl3() {
             document.getElementById("Fondo_Ciberpunk").play();
             
             Restar_Tiempolvl3 = setInterval(() => {
+                if (nivel3Terminado || isPaused3) return;
                 Tiempolvl3--;
                 document.getElementById("Tiempolvl3").innerHTML = Tiempolvl3;
             }, 1000);
 
-            // SE REANUDAN LOS METEORITOS Y EL GAMEOVER
             Intervalo_Dirlvl3 = setInterval(() => {
                 let el = document.getElementById('Meteoritolvl3');
                 if(el) { el.style.transition = "1.9s"; el.style.left = "80%"; }
@@ -261,16 +261,23 @@ function DETENER_JUEGOlvl3() {
                 if(el) { el.style.transition = "1.9s"; el.style.left = "80%"; }
             }, 2150);
 
-            perdisteLooplvl3 = setInterval(checkPerdisteLvl3, 20);
+            perdisteLooplvl3 = setInterval(() => {
+                if (nivel3Terminado || isPaused3) return;
+                let m1 = document.getElementById("Meteoritolvl3");
+                let m2 = document.getElementById("Meteorito2lvl3");
+                let m3 = document.getElementById("Meteorito3lvl3");
+                let m4 = document.getElementById("Meteorito4lvl3");
+                if ((m1 && m1.offsetLeft > 630) || (m2 && m2.offsetLeft > 630) || (m3 && m3.offsetLeft > 630) || (m4 && m4.offsetLeft > 630)) {
+                    nivel3Terminado = true;
+                    document.getElementById("Perdiste_sound").play();
+                    alert("YA ES DEMASIADO TARDE LOS METEORITOS DESTRUYERON GRAN PARTE DEL CONTINENTE.");
+                }
+            }, 20);
 
             meteoritos.forEach(id => {
                 let el = document.getElementById(id);
-                if(el) {
-                    el.style.transition = "1.9s";
-                    el.style.left = "80%";
-                }
+                if(el) { el.style.transition = "1.9s"; el.style.left = "80%"; }
             });
         }
-        ActivoLvl3 = !ActivoLvl3;
     });
 }
