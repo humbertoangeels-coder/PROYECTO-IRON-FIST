@@ -1,7 +1,7 @@
 /* --- RESET Y ESTILOS BASE --- */
 html, body {
     margin: 0; padding: 0; font-family: sans-serif;
-    overflow: hidden; /* Elimina scroll global */
+    overflow: hidden;
     height: 100vh; width: 100vw;
 }
 
@@ -11,12 +11,12 @@ html, body {
 }
 .Contenedor_Supremo { width: 100%; height: 100vh; overflow: hidden; position: relative;}
 
-/* --- CONTROL DE PANTALLAS (LINEALIDAD) --- */
+/* --- CONTROL DE PANTALLAS --- */
 .Seccion_01, #Reglas, #Seccion_2, #Seccion_Juego {
     width: 100%; height: 100vh; position: absolute; top: 0; left: 0; box-sizing: border-box;
 }
 #Reglas, #Seccion_2, #Seccion_Juego {
-    display: none; /* Oculta todas las pantallas excepto la primera */
+    display: none;
     opacity: 0;
     transition: opacity 0.8s ease;
 }
@@ -47,7 +47,7 @@ html, body {
 .Boton_Listo_Circular:hover { transform: scale(1.1); box-shadow: 0 0 30px rgba(0, 240, 255, 1); }
 .Boton_Listo_Circular span { font-family: 'Press Start 2P', cursive; font-size: clamp(8px, 0.65vw, 12px); color: #ffffff; text-align: center; padding: 8px;}
 
-/* --- SEGUNDA SECCIÓN (HISTORIA) --- */
+/* --- HISTORIA --- */
 #Seccion_2 { flex-direction: column; align-items: center; justify-content: center; }
 .Titulo_historia { font-family: 'Press Start 2P', cursive; text-align: center; font-size: clamp(20px, 3vw, 40px); position: absolute; top: 5%; width: 100%; text-shadow: 0 0 10px currentColor; }
 .Layout_Historia { display: flex; justify-content: center; align-items: center; width: 90%; max-width: 1200px; gap: 40px; margin-top: 50px; }
@@ -63,28 +63,66 @@ html, body {
 .Boton_preparado:hover { transform: scale(1.05); background: white; color: #ff00ff; }
 .Contenedor_narracion { width: 45px; height: 45px; background: cyan; color: black; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 0 15px cyan; transition: 0.3s; }
 
-/* --- TERCERA SECCIÓN (JUEGO GENERAL) --- */
-.Seccion_Juego { align-items: center; justify-content: center; flex-direction: column; }
-.Tituloar_Juego_5 { font-family: 'Press Start 2P', cursive; text-align: center; font-size: clamp(20px, 4vw, 50px); margin-bottom: 20px; text-shadow: 0 0 15px #fff;}
-.Nivel_Contenedor { width: 100%; display: flex; flex-direction: column; align-items: center; }
+/* --- PANTALLA PRINCIPAL DEL JUEGO (MAXIMIZADA) --- */
+.Seccion_Juego { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    flex-direction: column; 
+    padding: 10px 1vw; 
+    box-sizing: border-box; 
+    height: 100vh; 
+}
+.Tituloar_Juego_5 { font-family: 'Press Start 2P', cursive; text-align: center; font-size: clamp(16px, 2.5vw, 36px); margin: 0 0 5px 0; text-shadow: 0 0 15px #fff;}
 
-/* ==========================================================================
-   NIVELES Y CABECERAS
-   ========================================================================== */
-.Contenedor, .Contenedorlvl2, .Contenedorlvl3 { width: 95%; max-width: 900px; aspect-ratio: 16/9; height: auto; position: relative; overflow: hidden; cursor: crosshair; margin: 0 auto; border-radius: 0 0 10px 10px; background: url(IMG/Fondo.jpg) no-repeat center center; background-size: cover; }
+.Nivel_Contenedor { 
+    width: 98vw; 
+    max-width: 1600px; 
+    flex-grow: 1; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+}
+
+.Contenedor, .Contenedorlvl2, .Contenedorlvl3 { 
+    width: 100%; 
+    max-width: 100%; 
+    flex-grow: 1; 
+    min-height: 55vh; 
+    height: calc(100vh - 240px); 
+    position: relative; 
+    overflow: hidden; 
+    cursor: crosshair; 
+    margin: 0 auto; 
+    border-radius: 0 0 10px 10px; 
+    background: url(IMG/Fondo.jpg) no-repeat center center; 
+    background-size: cover; 
+}
 .Contenedor { border: 3px solid #ff00ff; box-shadow: 0 0 20px #ff00ff, inset 0 0 15px #ff00ff; }
 .Contenedorlvl2 { border: 3px solid #00d2ff; box-shadow: 0 0 20px #00d2ff, inset 0 0 15px #00d2ff; }
 .Contenedorlvl3 { border: 3px solid cyan; box-shadow: 0 0 20px cyan, inset 0 0 15px cyan; }
 
-.Cabezera, .Cabezeralvl2, .Cabezeralvl3 { width: 95%; max-width: 900px; min-height: 60px; background: rgba(0, 10, 30, 0.95); border-bottom: none; display: flex; align-items: center; justify-content: space-around; margin: 0 auto; border-radius: 10px 10px 0 0; padding: 10px 0; box-sizing: border-box; }
+.Cabezera, .Cabezeralvl2, .Cabezeralvl3 { 
+    width: 100%; 
+    max-width: 100%; 
+    min-height: 50px; 
+    background: rgba(0, 10, 30, 0.95); 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-around; 
+    border-radius: 10px 10px 0 0; 
+    padding: 8px 15px; 
+    box-sizing: border-box; 
+}
 .Cabezera { border: 3px solid #ff00ff; box-shadow: 0 -5px 15px rgba(255, 0, 255, 0.2); }
 .Cabezeralvl2 { border: 3px solid #00d2ff; box-shadow: 0 -5px 15px rgba(0, 210, 255, 0.2); }
 .Cabezeralvl3 { border: 3px solid cyan; box-shadow: 0 -5px 15px rgba(0, 255, 255, 0.2); }
 
 .Tiempo, .Puntaje, .Tiempolvl2, .Puntajelvl2, .Tiempolvl3, .Puntajelvl3 { display: flex; align-items: center; flex-direction: column; color: #fff; font-size: clamp(8px, 1.2vw, 12px); font-family: 'Press Start 2P', cursive; text-align: center;}
-.Tiempo h3, .Puntaje h3 { margin: 0 0 8px 0; color: #ff00ff; text-shadow: 0 0 5px #ff00ff; font-size: clamp(10px, 1.5vw, 14px);}
-.Tiempolvl2 h3, .Puntajelvl2 h3 { margin: 0 0 8px 0; color: #00d2ff; text-shadow: 0 0 5px #00d2ff; font-size: clamp(10px, 1.5vw, 14px);}
-.Tiempolvl3 h3, .Puntajelvl3 h3 { margin: 0 0 8px 0; color: cyan; text-shadow: 0 0 5px cyan; font-size: clamp(10px, 1.5vw, 14px);}
+.Tiempo h3, .Puntaje h3 { margin: 0 0 4px 0; color: #ff00ff; text-shadow: 0 0 5px #ff00ff; font-size: clamp(10px, 1.2vw, 14px);}
+.Tiempolvl2 h3, .Puntajelvl2 h3 { margin: 0 0 4px 0; color: #00d2ff; text-shadow: 0 0 5px #00d2ff; font-size: clamp(10px, 1.2vw, 14px);}
+.Tiempolvl3 h3, .Puntajelvl3 h3 { margin: 0 0 4px 0; color: cyan; text-shadow: 0 0 5px cyan; font-size: clamp(10px, 1.2vw, 14px);}
 
 .Start, .Startlvl2, .Startlvl3 { width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); position: absolute; top: 0%; z-index: 100000; display: flex; align-items: center; justify-content: center; flex-direction: column; color: white; text-align: center; }
 .Contenedor_Mensaje_Star { display: flex; flex-direction: column; align-items: center; justify-content: center;}
@@ -98,16 +136,7 @@ html, body {
 .Dificultad_Text_2 { text-shadow: 0 0 10px #00d2ff; } .Dificultad_Text_3 { text-shadow: 0 0 10px cyan; }
 
 #Contenedor_contador, #Contenedor_contadorlvl2, #Contenedor_contadorlvl3 { 
-    height: 100%; 
-    width: 100%; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    position: absolute; 
-    top: 0; 
-    left: 0;
-    pointer-events: none; /* ESTA LÍNEA PERMITE QUE LOS CLICS ATRAVIESEN LA CAPA INVISIBLE */
-    z-index: 20;
+    height: 100%; width: 100%; display: flex; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; pointer-events: none; z-index: 20;
 }
 #RGB, #RGBlvl2, #RGBlvl3 { font-size: clamp(80px, 20vw, 200px); font-family: 'Press Start 2P', cursive; }
 #RGB { color: #ff00ff; text-shadow: 0 0 20px #ff00ff; } #RGBlvl2 { color: #00d2ff; text-shadow: 0 0 20px #00d2ff; } #RGBlvl3 { color: cyan; text-shadow: 0 0 30px cyan; }
@@ -145,22 +174,19 @@ html, body {
     z-index: 5; background-size: 100% 2px, 3px 100%; pointer-events: none;
 }
 
-/* ==========================================================================
-   BOTONES CYBERPUNK
-   ========================================================================== */
+/* --- BOTONES --- */
 .Play, .Playlvl2, .Playlvl3, .NEXT, .Pause, .Pauselvl2, .Pauselvl3 {
     position: relative; border: none !important; text-transform: uppercase; font-weight: bold; letter-spacing: 2px;
     clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
     transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); font-family: 'Press Start 2P', cursive;
     display: flex; align-items: center; justify-content: center; cursor: pointer;
-    z-index: 50; /* ASEGURA QUE ESTÉN POR ENCIMA DE TODO */
-    pointer-events: auto; /* ASEGURA QUE RECIBAN CLICS */
+    z-index: 50; pointer-events: auto;
 }
 .Play { background-color: #ff00ff; color: #fff; width: 200px; height: 50px; margin-top: 20px; font-size: 14px;}
 .Playlvl2 { background-color: #00d2ff; color: #000; width: 200px; height: 50px; margin-top: 20px; font-size: 14px;}
 .Playlvl3 { background-color: cyan; color: #000; width: 200px; height: 50px; margin-top: 20px; font-size: 14px;}
 .NEXT { background-color: #ff00ff; color: #fff; width: 35%; height: 50px; font-size: clamp(8px, 1.2vw, 12px); margin: 0; text-align: center;}
-.Pause, .Pauselvl2, .Pauselvl3 { width: auto; padding: 0 15px; height: 40px; font-size: clamp(8px, 1vw, 10px); }
+.Pause, .Pauselvl2, .Pauselvl3 { width: auto; padding: 0 15px; height: 35px; font-size: clamp(8px, 1vw, 10px); }
 .Pause { background: rgba(255, 0, 255, 0.2); color: #ff00ff; border-bottom: 2px solid #ff00ff !important;}
 .Pauselvl2 { background: rgba(0, 210, 255, 0.2); color: #00d2ff; border-bottom: 2px solid #00d2ff !important;}
 .Pauselvl3 { background: rgba(0, 255, 255, 0.2); color: cyan; border-bottom: 2px solid cyan !important;}
@@ -174,35 +200,47 @@ html, body {
     100% { clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 20px) 100%, 0 100%, 0 20px); }
 }
 
-/* ==========================================================================
-   SWEETALERT2 NEÓN
-   ========================================================================== */
+/* --- SWEETALERT2 NEÓN --- */
 .alerta-neon-intro { border: 3px solid #00d2ff !important; box-shadow: 0 0 25px #00d2ff, inset 0 0 10px #00d2ff !important; border-radius: 10px !important; }
 .alerta-neon-lvl1 { border: 3px solid #ff00ff !important; box-shadow: 0 0 25px #ff00ff, inset 0 0 10px #ff00ff !important; border-radius: 10px !important; }
 
-/* ==========================================================================
-   CAJA INFERIOR (RELOJ Y TEXTO)
-   ========================================================================== */
-.Contenedor_LVL { display: flex; justify-content: space-between; align-items: stretch; width: 95%; max-width: 900px; margin: 15px auto 0 auto; background: transparent; gap: 15px; }
-.Contenedor_Reloj { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 30%; background: rgba(0, 5, 15, 0.85); border: 2px solid #ff00ff; border-radius: 8px; padding: 15px; box-shadow: 0 0 10px rgba(255, 0, 255, 0.3); box-sizing: border-box;}
-.Fecha { display: flex; width: 100%; margin-bottom: 10px; justify-content: center; align-items: center; flex-wrap: wrap;}
-.Fecha p { font-size: clamp(10px, 1.2vw, 14px); color: #00d2ff; font-family: 'Inconsolata', monospace; margin: 0 4px; font-weight: bold;}
+/* --- CAJA INFERIOR --- */
+.Contenedor_LVL { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    width: 98vw; 
+    max-width: 1600px; 
+    margin: 8px auto 0 auto; 
+    background: transparent; 
+    gap: 15px; 
+}
+.Contenedor_Reloj { 
+    display: flex; flex-direction: column; justify-content: center; align-items: center; 
+    width: 25%; background: rgba(0, 5, 15, 0.85); border: 2px solid #ff00ff; border-radius: 8px; 
+    padding: 10px; box-shadow: 0 0 10px rgba(255, 0, 255, 0.3); box-sizing: border-box;
+}
+.Fecha { display: flex; width: 100%; margin-bottom: 5px; justify-content: center; align-items: center; flex-wrap: wrap;}
+.Fecha p { font-size: clamp(9px, 1vw, 13px); color: #00d2ff; font-family: 'Inconsolata', monospace; margin: 0 3px; font-weight: bold;}
 .Hora { display: flex; width: 100%; align-items: center; justify-content: center; }
-.Hora p { font-size: clamp(20px, 3vw, 40px); color: white; font-family: 'Inconsolata', monospace; margin: 0; font-weight: bold;}
-#Caja_ULT { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; margin-left: 8px; }
-#Segundos { font-size: clamp(14px, 2vw, 22px); color: #ff00ff; font-family: 'Inconsolata', monospace; font-weight: bold;}
-#AMPM { font-size: clamp(10px, 1vw, 14px); color: white; font-family: 'Inconsolata', monospace; font-weight: bold; margin-top: 2px;}
+.Hora p { font-size: clamp(18px, 2.5vw, 32px); color: white; font-family: 'Inconsolata', monospace; margin: 0; font-weight: bold;}
+#Caja_ULT { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; margin-left: 6px; }
+#Segundos { font-size: clamp(12px, 1.5vw, 18px); color: #ff00ff; font-family: 'Inconsolata', monospace; font-weight: bold;}
+#AMPM { font-size: clamp(9px, 0.8vw, 12px); color: white; font-family: 'Inconsolata', monospace; font-weight: bold;}
 
-.Nada { flex-grow: 1; background: rgba(0, 5, 15, 0.85); border: 2px solid #ff00ff; border-radius: 8px; padding: 15px; box-shadow: 0 0 10px rgba(255, 0, 255, 0.3); display: flex; justify-content: space-between; align-items: center; gap: 15px; box-sizing: border-box;}
-.Caja_Text_Lvl { display: flex; flex-direction: column; justify-content: center; width: 60%; }
-.Nada h2 { font-family: 'Press Start 2P', cursive; color: #ff00ff; font-size: clamp(8px, 0.8vw, 10px); margin: 0 0 10px 0; line-height: 1.4;}
-.Nada p { font-family: sans-serif; font-size: clamp(10px, 1vw, 13px); color: #e0e0e0; line-height: 1.4; margin: 0;}
+.Nada { 
+    flex-grow: 1; background: rgba(0, 5, 15, 0.85); border: 2px solid #ff00ff; border-radius: 8px; 
+    padding: 10px 20px; box-shadow: 0 0 10px rgba(255, 0, 255, 0.3); display: flex; justify-content: space-between; align-items: center; gap: 15px; box-sizing: border-box;
+}
+.Caja_Text_Lvl { display: flex; flex-direction: column; justify-content: center; width: 65%; }
+.Nada h2 { font-family: 'Press Start 2P', cursive; color: #ff00ff; font-size: clamp(8px, 0.75vw, 10px); margin: 0 0 6px 0; line-height: 1.3;}
+.Nada p { font-family: sans-serif; font-size: clamp(10px, 0.85vw, 12px); color: #e0e0e0; line-height: 1.3; margin: 0;}
 
-/*BLOQUEO DE NIVELES INICIAL*/
+/* BLOQUEO DE NIVELES */
 #NIVEL_01, #NIVEL_02, #NIVEL3 { display: none; }
-#NIVEL_01 { display: flex; } /* El primer nivel activo por defecto */
+#NIVEL_01 { display: flex; }
 
-/* OTROS COMPLEMENTOS NIVEL 3 */
+/* COMPLEMENTOS NIVEL 3 */
 .Pantalla_navelvl3, .Pantalla_Nodrizalvl3, .Pantalla_nave2lvl3 { display: flex; align-items: center; justify-content: center; flex-direction: column; position: absolute; left: -100%; z-index: 3;}
 .Pantalla_navelvl3 { top: 0; } .Pantalla_Nodrizalvl3 { top: 32%; } .Pantalla_nave2lvl3 { top: 63%; }
 .Ovnislvl3 { width: 84px; transform: rotate(90deg); } #Nodrizalvl3 { width: 140px; transform: rotate(90deg); }
@@ -211,95 +249,16 @@ html, body {
 #Creditoslvl3 { top: -100%; line-height: 1.5; } #Proximolvl3 { bottom: -100%; line-height: 1.5; font-size: clamp(16px, 3vw, 30px); }
 #Proximolvl3 h4, #Creditoslvl3 h3, #Creditoslvl3 p { font-family: 'Press Start 2P', cursive; margin: 5px 0;}
 
-/* MEDIA QUERIES PARA CELULARES Y TABLETS (RESPONSIVE) */
+/* RESPONSIVE */
 @media (max-width: 950px) {
     .Reglas_Grid { grid-template-columns: 1fr; }
     .Contenedor_Img_Centro { grid-column: 1; grid-row: 1; }
     .Layout_Historia { flex-direction: column; margin-top: 80px; }
-    .Contenedor_Historia, .Contenedor_Video_Holograma { width: 100%; right: auto; left: auto; position: relative; opacity: 1; transform: none !important;}
+    .Contenedor_Historia, .Contenedor_Video_Holograma { width: 100%; }
     .Contenedor_LVL { flex-direction: column; }
     .Contenedor_Reloj, .Nada { width: 100%; }
     .Nada { flex-direction: column; text-align: center; }
-    .Caja_Text_Lvl { width: 100%; margin-bottom: 15px;}
+    .Caja_Text_Lvl { width: 100%; margin-bottom: 10px;}
     .NEXT { width: 100%; }
     .Cabezera, .Cabezeralvl2, .Cabezeralvl3 { flex-wrap: wrap; }
-    .Tiempo, .Puntaje, .Pause, .Pauselvl2, .Pauselvl3 { margin-bottom: 5px;}
-
-/* ==========================================================================
-   TAMAÑO MAXIMIZADO PARA LA INTERFAZ DEL JUEGO (NIVEL PEZ GLOBO Y OTROS)
-   ========================================================================== */
-
-/* Ajuste general del contenedor del juego para aprovechar el alto total */
-.Seccion_Juego {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: column;
-    padding: 10px 1vw;
-    box-sizing: border-box;
-    height: 100vh;
-}
-
-.Nivel_Contenedor {
-    width: 98vw;
-    max-width: 1600px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Cabecera ajustada al ancho máximo */
-.Cabezera, .Cabezeralvl2, .Cabezeralvl3 {
-    width: 100%;
-    max-width: 100%;
-    min-height: 50px;
-    background: rgba(0, 10, 30, 0.95);
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    border-radius: 10px 10px 0 0;
-    padding: 8px 15px;
-    box-sizing: border-box;
-}
-
-/* Área principal del juego (tablero) ocupando la mayor parte de la pantalla */
-.Contenedor, .Contenedorlvl2, .Contenedorlvl3 {
-    width: 100%;
-    max-width: 100%;
-    flex-grow: 1;
-    min-height: 55vh;
-    height: calc(100vh - 240px);
-    position: relative;
-    overflow: hidden;
-    cursor: crosshair;
-    margin: 0 auto;
-    border-radius: 0 0 10px 10px;
-    background: url(IMG/Fondo.jpg) no-repeat center center;
-    background-size: cover;
-}
-
-/* Ajustes a la caja inferior para alinearse al nuevo ancho gigante */
-.Contenedor_LVL {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 98vw;
-    max-width: 1600px;
-    margin: 8px auto 0 auto;
-    background: transparent;
-    gap: 15px;
-}
-
-.Contenedor_Reloj {
-    width: 25%;
-    padding: 10px;
-}
-
-.Nada {
-    flex-grow: 1;
-    padding: 10px 20px;
-}
-
 }
