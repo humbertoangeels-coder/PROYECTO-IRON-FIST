@@ -64,8 +64,15 @@ let Activador_inicial, Activador_inicial2, perdisteLoop;
 
 function getDimensiones1() {
     const tablero = document.querySelector('.Contenedor');
-    return { limiteX: tablero.offsetWidth * 0.70, alturaMax: tablero.offsetHeight - 70 };
+    return { 
+        limiteX: tablero.offsetWidth * 0.70, 
+        alturaMax: tablero.offsetHeight - 80 
+    };
 }
+//function getDimensiones1() {
+//    const tablero = document.querySelector('.Contenedor');
+//    return { limiteX: tablero.offsetWidth * 0.70, alturaMax: tablero.offsetHeight - 70 };
+//}
 
 // LÓGICA PRINCIPAL DEL JUEGO (NIVEL 1)
 function JUEGO() {
