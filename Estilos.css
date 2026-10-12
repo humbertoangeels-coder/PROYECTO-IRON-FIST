@@ -1513,3 +1513,87 @@ body {
         width: max-content;
     }
 }
+
+/* ============================================================================
+   SISTEMA DE POWER-UPS (CAJAS DE HABILIDADES)
+   ============================================================================ */
+.PowerUp {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    z-index: 950;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: flotarPowerUp 1.5s infinite alternate;
+    border: 2px solid #fff;
+}
+
+.PowerUp i {
+    font-size: 18px;
+    color: #fff;
+}
+
+/* Tipos de Poderes */
+.Poder-Rapido {
+    background: rgba(0, 255, 0, 0.6);
+    box-shadow: 0 0 20px #00ff00;
+    border-color: #00ff00;
+}
+
+.Poder-Rapido i {
+    text-shadow: 0 0 10px #00ff00;
+}
+
+.Poder-Escudo {
+    background: rgba(0, 150, 255, 0.6);
+    box-shadow: 0 0 20px #0096ff;
+    border-color: #0096ff;
+}
+
+.Poder-Escudo i {
+    text-shadow: 0 0 10px #0096ff;
+}
+
+.Poder-Bomba {
+    background: rgba(150, 0, 255, 0.6);
+    box-shadow: 0 0 20px #9600ff;
+    border-color: #9600ff;
+}
+
+.Poder-Bomba i {
+    text-shadow: 0 0 10px #9600ff;
+}
+
+@keyframes flotarPowerUp {
+    0% {
+        transform: scale(1) translateY(0px) rotate(-10deg);
+    }
+
+    100% {
+        transform: scale(1.1) translateY(-10px) rotate(10deg);
+    }
+}
+
+/* Alerta de texto cuando agarras un poder */
+.TextoPoder {
+    position: absolute;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    z-index: 1000;
+    pointer-events: none;
+    animation: flotarArribaPoder 1s ease-out forwards;
+}
+
+@keyframes flotarArribaPoder {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-60px) scale(1.2);
+        opacity: 0;
+    }
+}

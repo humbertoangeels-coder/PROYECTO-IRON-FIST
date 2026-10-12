@@ -1,10 +1,17 @@
-let Tiempolvl2 = 61; let Puntajelvl2 = 0; const metaPuntosLvl2 = 25; // NUEVA META DE 25 PUNTOS
+/**
+ * ============================================================================
+ * IRON FIST - NIVEL 2
+ * ============================================================================
+ * V4.0: Sistema de Oleadas (6 Asteroides), Doble Láser, Vidas y Power-Ups.
+ */
+
+let Tiempolvl2 = 61; let Puntajelvl2 = 0; const metaPuntosLvl2 = 25; 
 let nivel2Terminado = false; let isPaused2 = false; let juegoIniciadoLvl2 = false;
-let VidasLvl2 = 3;
+let VidasLvl2 = 3; 
 
 let keys2 = {};
 document.addEventListener('keydown', (e) => {
-    if (e.key === " ") e.preventDefault();
+    if (e.key === " ") e.preventDefault(); 
     if (!nivel2Terminado && !isPaused2 && document.getElementById("NIVEL_02").style.display !== "none") {
         keys2[e.key.toLowerCase()] = true;
     }
@@ -12,16 +19,19 @@ document.addEventListener('keydown', (e) => {
 document.addEventListener('keyup', (e) => { keys2[e.key.toLowerCase()] = false; });
 window.addEventListener('blur', () => { keys2 = {}; });
 
-function crearTextoPunto2(x, y, contenedor, color) {
-    let txt = document.createElement('div'); txt.innerText = "+1"; txt.className = "PuntoFlotante";
+function crearTextoPunto2(x, y, contenedor, color, texto = "+1") {
+    let txt = document.createElement('div'); txt.innerText = texto; 
+    txt.className = texto === "+1" ? "PuntoFlotante" : "TextoPoder";
     txt.style.color = color; txt.style.textShadow = "0 0 10px " + color;
     let rectCont = contenedor.getBoundingClientRect();
     txt.style.left = (x - rectCont.left) + 'px'; txt.style.top = (y - rectCont.top) + 'px';
-    contenedor.appendChild(txt); setTimeout(() => txt.remove(), 600);
+    contenedor.appendChild(txt); setTimeout(() => txt.remove(), 1000);
 }
 
 let Restar_Tiempolvl2, loopJuego2;
 let spawnTimeouts2 = []; let spawnIntervals2 = [];
+let arrayPowerUps2 = [];
+let tiempoRecargaLaser2 = 250;
 
 const meteoritos2 = ['Meteioritolvl2', 'Meteiorito2lvl2', 'Meteiorito3lvl2', 'Meteiorito4lvl2', 'Meteiorito5lvl2', 'Meteiorito6lvl2'];
 const configOleada2 = [
@@ -42,9 +52,24 @@ function crearExplosion2(x, y, contenedor) {
     contenedor.appendChild(exp); setTimeout(() => exp.remove(), 400);
 }
 
-function JUEGOlvl2() {
-    nivel2Terminado = false; isPaused2 = false; keys2 = {};
+function soltarPowerUp2(x, y, tablero) {
+    if (Math.random() > 0.15) return; 
+    let tipos = [
+        { clase: 'Poder-Rapido', icono: 'fa-bolt', nombre: 'AMETRALLADORA' },
+        { clase: 'Poder-Escudo', icono: 'fa-shield-alt', nombre: 'ESCUDO MAX' },
+        { clase: 'Poder-Bomba', icono: 'fa-bomb', nombre: 'BOMBA NOVA' }
+    ];
+    let poder = tipos[Math.floor(Math.random() * tipos.length)];
+    let pUp = document.createElement("div"); pUp.className = "PowerUp " + poder.clase; pUp.innerHTML = `<i class="fas ${poder.icono}"></i>`;
+    let rectCont = tablero.getBoundingClientRect(); let startX = x - rectCont.left; let startY = y - rectCont.top;
+    pUp.style.left = startX + "px"; pUp.style.top = startY + "px";
+    tablero.appendChild(pUp); arrayPowerUps2.push({ element: pUp, x: startX, y: startY, tipo: poder.nombre });
+}
 
+function JUEGOlvl2() {
+    nivel2Terminado = false; isPaused2 = false; keys2 = {}; tiempoRecargaLaser2 = 250;
+    arrayPowerUps2.forEach(p => { if(p.element) p.element.remove(); }); arrayPowerUps2 = [];
+    
     let tablero = document.querySelector('.Contenedorlvl2');
     let nave2 = document.getElementById("NaveJugador2"); nave2.style.opacity = "1";
 
@@ -54,11 +79,10 @@ function JUEGOlvl2() {
     document.getElementById("corazon3_lvl2").classList.remove("perdida");
 
     let esInvulnerable = true; nave2.classList.add("NaveInvulnerable");
-    setTimeout(() => { esInvulnerable = false; nave2.classList.remove("NaveInvulnerable"); }, 2500);
+    let timerEscudo2 = setTimeout(() => { esInvulnerable = false; nave2.classList.remove("NaveInvulnerable"); }, 2500);
 
     let posX2 = tablero.offsetWidth * 0.55; let posY2 = tablero.offsetHeight / 2;
-    const velocidadNave2 = 12;
-    let lasers2 = []; let puedeDisparar2 = true;
+    const velocidadNave2 = 12; let lasers2 = []; let puedeDisparar2 = true;
 
     Restar_Tiempolvl2 = setInterval(() => {
         if (nivel2Terminado || isPaused2) return;
@@ -69,25 +93,48 @@ function JUEGOlvl2() {
     function dispararLaser2() {
         puedeDisparar2 = false;
         let laserY1 = posY2 + (nave2.offsetHeight / 2) - 15; let laserY2 = posY2 + (nave2.offsetHeight / 2) + 10; let laserX = posX2 - 10;
+
         let l1 = document.createElement("div"); l1.classList.add("Laser2"); l1.style.left = laserX + "px"; l1.style.top = laserY1 + "px"; tablero.appendChild(l1); lasers2.push({ element: l1, x: laserX, y: laserY1 });
         let l2 = document.createElement("div"); l2.classList.add("Laser2"); l2.style.left = laserX + "px"; l2.style.top = laserY2 + "px"; tablero.appendChild(l2); lasers2.push({ element: l2, x: laserX, y: laserY2 });
-        setTimeout(() => puedeDisparar2 = true, 200);
+
+        setTimeout(() => puedeDisparar2 = true, tiempoRecargaLaser2); 
     }
 
     function RecibirDano2(rectNave) {
         if (esInvulnerable) return;
-        VidasLvl2--;
-        crearExplosion2(rectNave.left, rectNave.top, tablero);
-        let s = document.getElementById("Perdiste_sound"); if (s) { s.currentTime = 0; s.play().catch(() => { }); }
+        VidasLvl2--; crearExplosion2(rectNave.left, rectNave.top, tablero);
+        let s = document.getElementById("Perdiste_sound"); if(s) { s.currentTime = 0; s.play().catch(()=>{}); }
         tablero.classList.add("PantallaDano"); setTimeout(() => tablero.classList.remove("PantallaDano"), 300);
 
         let corazon = document.getElementById("corazon" + (VidasLvl2 + 1) + "_lvl2");
-        if (corazon) corazon.classList.add("perdida");
+        if(corazon) corazon.classList.add("perdida");
 
-        if (VidasLvl2 <= 0) { Game_Over_2("TU NAVE FUE DESTRUIDA."); }
+        if (VidasLvl2 <= 0) { Game_Over_2("TU NAVE FUE DESTRUIDA."); } 
         else {
-            esInvulnerable = true; nave2.classList.add("NaveInvulnerable");
-            setTimeout(() => { esInvulnerable = false; nave2.classList.remove("NaveInvulnerable"); }, 2000);
+            esInvulnerable = true; nave2.classList.add("NaveInvulnerable"); clearTimeout(timerEscudo2);
+            timerEscudo2 = setTimeout(() => { esInvulnerable = false; nave2.classList.remove("NaveInvulnerable"); }, 2000);
+        }
+    }
+
+    function activarPoder2(tipo, x, y) {
+        let sound = document.getElementById("Puntos_sound"); if(sound) { sound.currentTime = 0; sound.play().catch(()=>{}); }
+        if (tipo === 'AMETRALLADORA') {
+            crearTextoPunto2(x, y, tablero, "#00ff00", "¡AMETRALLADORA!");
+            tiempoRecargaLaser2 = 70; setTimeout(() => { tiempoRecargaLaser2 = 250; }, 5000);
+        } else if (tipo === 'ESCUDO MAX') {
+            crearTextoPunto2(x, y, tablero, "#0096ff", "¡ESCUDO MAX!");
+            esInvulnerable = true; nave2.classList.add("NaveInvulnerable"); clearTimeout(timerEscudo2);
+            timerEscudo2 = setTimeout(() => { esInvulnerable = false; nave2.classList.remove("NaveInvulnerable"); }, 6000);
+        } else if (tipo === 'BOMBA NOVA') {
+            crearTextoPunto2(x, y, tablero, "#9600ff", "¡NOVA!");
+            tablero.classList.add("PantallaDano"); setTimeout(() => tablero.classList.remove("PantallaDano"), 300);
+            meteoritos2.forEach(id => {
+                let met = document.getElementById(id);
+                if (met && met.style.left !== "-500px" && met.style.left !== "-70%") {
+                    let rM = met.getBoundingClientRect(); crearExplosion2(rM.left, rM.top, tablero);
+                    Explulsarlvl2(id); Aumentar_Puntoslvl2();
+                }
+            });
         }
     }
 
@@ -104,7 +151,6 @@ function JUEGOlvl2() {
         if (keys2['d'] || keys2['arrowright']) dx += velActual;
 
         posX2 += dx; posY2 += dy;
-
         let dim = getDimensiones2();
         if (posX2 < 0) posX2 = 0; if (posY2 < 0) posY2 = 0; if (posY2 > dim.alturaMax) posY2 = dim.alturaMax;
         nave2.style.left = posX2 + "px"; nave2.style.top = posY2 + "px";
@@ -114,10 +160,19 @@ function JUEGOlvl2() {
         let rectNave = nave2.getBoundingClientRect();
         let hitboxNave = { left: rectNave.left + 25, right: rectNave.right - 25, top: rectNave.top + 25, bottom: rectNave.bottom - 25 };
 
+        for (let i = arrayPowerUps2.length - 1; i >= 0; i--) {
+            let p = arrayPowerUps2[i]; if(!p || !p.element) { arrayPowerUps2.splice(i, 1); continue; }
+            p.x -= 3; p.element.style.left = p.x + "px";
+            let rectP = p.element.getBoundingClientRect();
+            if (hitboxNave.left < rectP.right && hitboxNave.right > rectP.left && hitboxNave.top < rectP.bottom && hitboxNave.bottom > rectP.top) {
+                activarPoder2(p.tipo, rectP.left, rectP.top);
+                p.element.remove(); arrayPowerUps2.splice(i, 1);
+            } else if (p.x < -100) { p.element.remove(); arrayPowerUps2.splice(i, 1); }
+        }
+
         for (let i = lasers2.length - 1; i >= 0; i--) {
             let l = lasers2[i];
             if (!l || !l.element || typeof l.x === 'undefined') { lasers2.splice(i, 1); continue; }
-
             l.x -= 30; l.element.style.left = l.x + "px";
             let rectLaser = l.element.getBoundingClientRect(); let laserGolpeo = false;
 
@@ -127,6 +182,7 @@ function JUEGOlvl2() {
                     let rM = met.getBoundingClientRect();
                     if (rectLaser.left < rM.right && rectLaser.right > rM.left && rectLaser.top < rM.bottom && rectLaser.bottom > rM.top) {
                         crearExplosion2(rM.left, rM.top, tablero); crearTextoPunto2(rM.left, rM.top, tablero, "#ff00ff");
+                        soltarPowerUp2(rM.left, rM.top, tablero);
                         Explulsarlvl2(id); Aumentar_Puntoslvl2(); laserGolpeo = true;
                     }
                 }
@@ -147,14 +203,15 @@ function JUEGOlvl2() {
     }
     loopJuego2 = setInterval(loopPrincipal2, 30);
 
-    document.getElementById("Pauselvl2").onclick = function () {
+    document.getElementById("Pauselvl2").onclick = function() {
         if (nivel2Terminado) return; isPaused2 = !isPaused2;
         if (isPaused2) {
             document.getElementById("Pausa_Pantallalvl2").style.display = "flex"; document.getElementById("Fondo_Ciberpunk").pause();
-            meteoritos2.forEach(id => { let el = document.getElementById(id); if (el) { let comp = window.getComputedStyle(el); el.style.left = comp.left; el.style.transition = "none"; } });
+            meteoritos2.forEach(id => { let el = document.getElementById(id); if(el) { let comp = window.getComputedStyle(el); el.style.left = comp.left; el.style.transition = "none"; } });
+            arrayPowerUps2.forEach(p => { if(p.element) { let comp = window.getComputedStyle(p.element); p.element.style.left = comp.left; p.element.style.transition = "none"; } });
         } else {
             document.getElementById("Pausa_Pantallalvl2").style.display = "none"; document.getElementById("Fondo_Ciberpunk").play();
-            meteoritos2.forEach(id => { let el = document.getElementById(id); if (el && el.style.left !== "-500px" && el.style.left !== "-70%") { el.style.transition = "3s linear"; el.style.left = "80%"; } });
+            meteoritos2.forEach(id => { let el = document.getElementById(id); if(el && el.style.left !== "-500px" && el.style.left !== "-70%") { el.style.transition = "3s linear"; el.style.left = "80%"; } });
         }
     };
 
@@ -170,13 +227,13 @@ function JUEGOlvl2() {
                 confirmButtonText: '<span style="font-family: \'Press Start 2P\', cursive; font-size: 12px;">ENTRAR FASE 3</span>', confirmButtonColor: '#ff3300', customClass: { popup: 'alerta-neon-lvl3' }, allowOutsideClick: false
             }).then(() => {
                 document.getElementById("NIVEL_02").style.display = "none"; document.getElementById("NIVEL3").style.display = "flex";
-                if (typeof PLAYlvl3 === "function") PLAYlvl3();
+                if(typeof PLAYlvl3 === "function") PLAYlvl3();
             });
         }
     }
 
     function Game_Over_2(razon) {
-        if (nivel2Terminado) return; nivel2Terminado = true; keys2 = {}; detenerMeteoritosLvl2();
+        if(nivel2Terminado) return; nivel2Terminado = true; keys2 = {}; detenerMeteoritosLvl2();
         Swal.fire({
             title: '<span style="font-family: \'Press Start 2P\', cursive; color: #ff00ff; font-size: 24px;">¡CAÍSTE EN COMBATE!</span>',
             html: '<b style="color:white; font-size: 16px;">' + razon + '</b>',
@@ -188,14 +245,15 @@ function JUEGOlvl2() {
         spawnIntervals2.forEach(clearInterval); spawnIntervals2 = [];
         spawnTimeouts2.forEach(clearTimeout); spawnTimeouts2 = [];
         clearInterval(Restar_Tiempolvl2); clearInterval(loopJuego2);
-        meteoritos2.forEach(id => { let el = document.getElementById(id); if (el) { el.style.transition = "0s"; el.style.left = "-70%"; } });
+        meteoritos2.forEach(id => { let el = document.getElementById(id); if(el) { el.style.transition = "0s"; el.style.left = "-70%"; } });
         lasers2.forEach(l => { if (l && l.element) l.element.remove(); }); lasers2 = [];
+        arrayPowerUps2.forEach(p => { if(p.element) p.element.remove(); }); arrayPowerUps2 = [];
     }
 
     function iniciarTrayectoriaLvl2(id, velocidad) {
         if (nivel2Terminado || isPaused2) return;
         let el = document.getElementById(id);
-        if (el) { let dim = getDimensiones2(); let altura = Math.round(Math.random() * dim.alturaMax); el.style.left = "80%"; el.style.top = altura + "px"; el.style.transition = velocidad + "s linear"; }
+        if(el){ let dim = getDimensiones2(); let altura = Math.round(Math.random() * dim.alturaMax); el.style.left = "80%"; el.style.top = altura + "px"; el.style.transition = velocidad + "s linear"; }
     }
 
     configOleada2.forEach(m => {
@@ -207,7 +265,7 @@ function JUEGOlvl2() {
         const sonidos = ["Puntos_sound", "Punto2", "Punto3", "Punto4"];
         let randomSound = sonidos[Math.floor(Math.random() * sonidos.length)];
         let sound = document.getElementById(randomSound);
-        if (sound) { sound.currentTime = 0; let p = sound.play(); if (p !== undefined) p.catch(() => { }); }
+        if(sound) { sound.currentTime = 0; let p = sound.play(); if(p !== undefined) p.catch(()=>{}); } 
         let el = document.getElementById(id); let dim = getDimensiones2(); let altura = Math.round(Math.random() * dim.alturaMax);
         el.style.left = "-500px"; el.style.top = altura + "px"; el.style.transition = "1.8s";
     }
@@ -215,11 +273,10 @@ function JUEGOlvl2() {
 
 function PLAYlvl2() {
     if (juegoIniciadoLvl2) return; juegoIniciadoLvl2 = true; let Conteo = 4;
-    document.getElementById("Fondo_Ciberpunk").play();
+    document.getElementById("Fondo_Ciberpunk").play(); 
     document.querySelector("#NIVEL_02 .Contenedor_Mensaje_Star").style.display = "none";
     setTimeout(JUEGOlvl2, 4100);
-    let cuentaRegresiva = setInterval(() => {
-        Conteo--; document.getElementById("RGBlvl2").innerHTML = Conteo;
+    let cuentaRegresiva = setInterval(() => { Conteo--; document.getElementById("RGBlvl2").innerHTML = Conteo;
         if (Conteo === -1) { clearInterval(cuentaRegresiva); document.getElementById("Contenedor_contadorlvl2").style.display = "none"; document.getElementById("Startlvl2").style.display = "none"; }
     }, 1000);
 }
