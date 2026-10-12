@@ -1,343 +1,280 @@
-// Alerta de Bienvenida con estilo Sci-Fi
+/**
+ * ============================================================================
+ * IRON FIST - SCRIPT PRINCIPAL Y NIVEL 1
+ * ============================================================================
+ * V3.0: Sistema de Récords Guardados (High Score) y Aumento de Dificultad.
+ */
+
+// LECTURA DEL RÉCORD GUARDADO EN LA MEMORIA DEL NAVEGADOR
+window.onload = function () {
+    let recordGuardado = localStorage.getItem('IronFist_HighScore') || 0;
+    let txtRecord = document.getElementById("Texto_HighScore");
+    if (txtRecord) txtRecord.innerText = recordGuardado + " PTS";
+};
+
 Swal.fire({
     title: '<span style="font-family: \'Press Start 2P\', cursive; color: #00d2ff; text-shadow: 0 0 10px #00d2ff; font-size: 18px; line-height: 1.5;">¿PREPARADO PARA SALVAR EL MUNDO?</span>',
-    html: '<div style="font-family: sans-serif; color: #e0e0e0; font-size: 14px; line-height: 1.6; padding: 10px;">IRON FIST es un juego que mejorará tus reflejos a medida que pases de nivel, retándote cada vez más a medida que avances y desbloqueando grandes logros al final de cada nivel. Esperamos te diviertas y disfrutes de este gran juego.</div>',
-    imageUrl: 'IMG/planeta_tierra.png',
-    imageWidth: 120,
-    imageAlt: 'Planeta Tierra',
-    background: 'rgba(0, 5, 15, 0.95)',
-    color: '#fff',
-    backdrop: 'rgba(0, 210, 255, 0.15)',
+    html: '<div style="font-family: sans-serif; color: #e0e0e0; font-size: 14px; line-height: 1.6; padding: 10px;">Usa W, A, S, D o las flechas para moverte.<br><br><b style="color:#00d2ff">Presiona ESPACIO para disparar.</b><br><br>Tienes <b>3 VIDAS</b>. Evita que los meteoritos te golpeen o crucen la línea.</div>',
+    imageUrl: 'IMG/planeta_tierra.png', imageWidth: 120, imageAlt: 'Planeta Tierra',
+    background: 'rgba(0, 5, 15, 0.95)', color: '#fff', backdrop: 'rgba(0, 210, 255, 0.15)',
     confirmButtonText: '<span style="font-family: \'Press Start 2P\', cursive; font-size: 12px;">ESTOY PREPARADO</span>',
-    confirmButtonColor: '#00d2ff',
-    width: '50%',
-    padding: '2em',
-    allowOutsideClick: false,
-    allowEscapeKey: false,
-    allowEnterKey: false,
-    stopKeydownPropagation: false,
-    customClass: { popup: 'alerta-neon-intro' }
+    confirmButtonColor: '#00d2ff', width: '50%', padding: '2em', allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false, stopKeydownPropagation: false, customClass: { popup: 'alerta-neon-intro' }
 });
 
-let Tiempo = 71;
-let Puntaje = 0;
-const metaLvl1 = 10; 
-let nivel1Terminado = false;
-let isPaused1 = false;
-let juegoIniciadoLvl1 = false;
+let Tiempo = 71; let Puntaje = 0; const metaLvl1 = 15; // NUEVA META DE 15 PUNTOS
+let nivel1Terminado = false; let isPaused1 = false; let juegoIniciadoLvl1 = false;
+let VidasLvl1 = 3;
 
-// FUNCION DE NARRACIONES
-let Narracion = 1;
-document.getElementById("Contenedor_narracion").addEventListener('click', Iniciar_narracion);
-function Iniciar_narracion() {
-    if (Narracion === 1) {
-        document.getElementById("narracion").play();
-        document.getElementById("VOLUMEN").style.display = "none";
-        document.getElementById("PAUSE").style.display = "table";
-        Narracion = 2;
-    } else {
-        document.getElementById("narracion").pause();
-        document.getElementById("VOLUMEN").style.display = "table";
-        document.getElementById("PAUSE").style.display = "none";
-        Narracion = 1;
+let keys1 = {};
+document.addEventListener('keydown', (e) => {
+    if (e.key === " ") e.preventDefault();
+    if (!nivel1Terminado && !isPaused1 && document.getElementById("NIVEL_01").style.display !== "none") {
+        keys1[e.key.toLowerCase()] = true;
     }
+});
+document.addEventListener('keyup', (e) => { keys1[e.key.toLowerCase()] = false; });
+window.addEventListener('blur', () => { keys1 = {}; });
+
+function crearTextoPunto(x, y, contenedor, color) {
+    let txt = document.createElement('div'); txt.innerText = "+1"; txt.className = "PuntoFlotante";
+    txt.style.color = color; txt.style.textShadow = "0 0 10px " + color;
+    let rectCont = contenedor.getBoundingClientRect();
+    txt.style.left = (x - rectCont.left) + 'px'; txt.style.top = (y - rectCont.top) + 'px';
+    contenedor.appendChild(txt); setTimeout(() => txt.remove(), 600);
 }
 
+let Narracion = 1;
+document.getElementById("Contenedor_narracion").addEventListener('click', () => {
+    if (Narracion === 1) {
+        document.getElementById("narracion").play(); document.getElementById("VOLUMEN").style.display = "none"; document.getElementById("PAUSE").style.display = "table"; Narracion = 2;
+    } else { document.getElementById("narracion").pause(); document.getElementById("VOLUMEN").style.display = "table"; document.getElementById("PAUSE").style.display = "none"; Narracion = 1; }
+});
 let Graficos = 1;
 function Graficos_fondo() {
     if (Graficos === 1) {
-        document.getElementById("Recursos").style.marginLeft = "60%";
-        document.getElementById("Fondo").style.background = "url(IMG/Fondo_Espacio2.jpg)";
-        document.getElementById("Fondo").style.backgroundAttachment = "fixed";
-        document.getElementById("Fondo").style.backgroundRepeat = "no-repeat";
-        document.getElementById("Fondo").style.backgroundSize = "cover";
-        Graficos = 2;
-    } else {
-        document.getElementById("Recursos").style.marginLeft = "0%";
-        document.getElementById("Fondo").style.backgroundImage = "url(IMG/Fondo_Espacio.gif)";
-        Graficos = 1;
-    }
+        document.getElementById("Recursos").style.marginLeft = "60%"; document.getElementById("Fondo").style.background = "url(IMG/Fondo_Espacio2.jpg)"; document.getElementById("Fondo").style.backgroundAttachment = "fixed"; document.getElementById("Fondo").style.backgroundSize = "cover"; Graficos = 2;
+    } else { document.getElementById("Recursos").style.marginLeft = "0%"; document.getElementById("Fondo").style.backgroundImage = "url(IMG/Fondo_Espacio.gif)"; Graficos = 1; }
 }
 
-let Restar_Tiempo, Reanudar_trayectoria, Reanudar_trayectoria2;
-let Activador_inicial, Activador_inicial2, perdisteLoop; 
+let Restar_Tiempo, loopJuego1;
+let spawnTimeouts1 = []; let spawnIntervals1 = [];
 
-function getDimensiones1() {
-    const tablero = document.querySelector('.Contenedor');
-    return { 
-        limiteX: tablero.offsetWidth * 0.70, 
-        alturaMax: tablero.offsetHeight - 80 
-    };
+const meteoritos = ['Meteiorito', 'Meteiorito2', 'Meteiorito3', 'Meteiorito4'];
+const configOleada1 = [
+    { id: 'Meteiorito', delay: 2000, freq: 3600, vel: 3.5 },
+    { id: 'Meteiorito2', delay: 2600, freq: 3500, vel: 3.5 },
+    { id: 'Meteiorito3', delay: 3200, freq: 3800, vel: 3.5 },
+    { id: 'Meteiorito4', delay: 4000, freq: 3400, vel: 3.5 }
+];
+
+function getDimensiones1() { return { limiteX: document.querySelector('.Contenedor').offsetWidth * 0.70, alturaMax: document.querySelector('.Contenedor').offsetHeight - 80 }; }
+
+function crearExplosion(x, y, contenedor) {
+    let exp = document.createElement('div'); exp.classList.add('Explosion');
+    let rectCont = contenedor.getBoundingClientRect();
+    exp.style.left = (x - rectCont.left - 10) + 'px'; exp.style.top = (y - rectCont.top - 10) + 'px';
+    contenedor.appendChild(exp); setTimeout(() => exp.remove(), 400);
 }
-//function getDimensiones1() {
-//    const tablero = document.querySelector('.Contenedor');
-//    return { limiteX: tablero.offsetWidth * 0.70, alturaMax: tablero.offsetHeight - 70 };
-//}
 
-// LÓGICA PRINCIPAL DEL JUEGO (NIVEL 1)
 function JUEGO() {
-    nivel1Terminado = false;
-    isPaused1 = false;
+    nivel1Terminado = false; isPaused1 = false; keys1 = {};
 
-    function Tiempo_Disminur() {
+    let tablero = document.querySelector('.Contenedor');
+    let nave = document.getElementById("NaveJugador1");
+    nave.style.opacity = "1";
+
+    VidasLvl1 = 3;
+    document.getElementById("corazon1_lvl1").classList.remove("perdida");
+    document.getElementById("corazon2_lvl1").classList.remove("perdida");
+    document.getElementById("corazon3_lvl1").classList.remove("perdida");
+
+    let esInvulnerable = true; nave.classList.add("NaveInvulnerable");
+    setTimeout(() => { esInvulnerable = false; nave.classList.remove("NaveInvulnerable"); }, 2500);
+
+    let posX = tablero.offsetWidth * 0.55; let posY = tablero.offsetHeight / 2;
+    const velocidadNave = 12;
+    let lasers1 = []; let puedeDisparar1 = true;
+
+    Restar_Tiempo = setInterval(() => {
         if (nivel1Terminado || isPaused1) return;
-        Tiempo--;
-        document.getElementById("Tiempo").innerHTML = Tiempo;
-        if (Tiempo <= 0) {
-            document.getElementById("Perdiste_sound").play();
-            alert("El tiempo se ha agotado. Misión Fallida.");
-            reiniciarEstado();
+        Tiempo--; document.getElementById("Tiempo").innerHTML = Tiempo;
+        if (Tiempo <= 0) { Game_Over_1("EL TIEMPO SE AGOTÓ."); }
+    }, 1000);
+
+    function dispararLaser() {
+        puedeDisparar1 = false;
+        let laser = document.createElement("div"); laser.classList.add("Laser1");
+        let laserX = posX - 10; let laserY = posY + (nave.offsetHeight / 2) - 3;
+        laser.style.left = laserX + "px"; laser.style.top = laserY + "px";
+        tablero.appendChild(laser); lasers1.push({ element: laser, x: laserX, y: laserY });
+        setTimeout(() => puedeDisparar1 = true, 300);
+    }
+
+    function RecibirDano(rectNave) {
+        if (esInvulnerable) return;
+        VidasLvl1--;
+        crearExplosion(rectNave.left, rectNave.top, tablero);
+        let s = document.getElementById("Perdiste_sound"); if (s) { s.currentTime = 0; s.play().catch(() => { }); }
+        tablero.classList.add("PantallaDano"); setTimeout(() => tablero.classList.remove("PantallaDano"), 300);
+
+        let corazon = document.getElementById("corazon" + (VidasLvl1 + 1) + "_lvl1");
+        if (corazon) corazon.classList.add("perdida");
+
+        if (VidasLvl1 <= 0) { Game_Over_1("TU NAVE FUE DESTRUIDA."); }
+        else {
+            esInvulnerable = true; nave.classList.add("NaveInvulnerable");
+            setTimeout(() => { esInvulnerable = false; nave.classList.remove("NaveInvulnerable"); }, 2000);
         }
     }
-    Restar_Tiempo = setInterval(Tiempo_Disminur, 1000);
 
-    const meteoritos = ['Meteiorito', 'Meteiorito2'];
-    meteoritos.forEach(id => {
-        let el = document.getElementById(id);
-        let newEl = el.cloneNode(true);
-        el.parentNode.replaceChild(newEl, el);
-        newEl.addEventListener('mouseover', Aumentar_Puntos);
-        newEl.addEventListener('mouseover', () => Explulsar(newEl.id));
-    });
+    function loopPrincipal1() {
+        if (nivel1Terminado || isPaused1) return;
+
+        let velActual = keys1['shift'] ? velocidadNave * 1.8 : velocidadNave;
+        if (keys1['shift']) { nave.classList.add("NaveBoost"); } else { nave.classList.remove("NaveBoost"); }
+
+        let dx = 0; let dy = 0;
+        if (keys1['w'] || keys1['arrowup']) dy -= velActual;
+        if (keys1['s'] || keys1['arrowdown']) dy += velActual;
+        if (keys1['a'] || keys1['arrowleft']) dx -= velActual;
+        if (keys1['d'] || keys1['arrowright']) dx += velActual;
+
+        posX += dx; posY += dy;
+
+        let dim = getDimensiones1();
+        if (posX < 0) posX = 0; if (posY < 0) posY = 0; if (posY > dim.alturaMax) posY = dim.alturaMax;
+        nave.style.left = posX + "px"; nave.style.top = posY + "px";
+
+        if (keys1[' '] && puedeDisparar1) { dispararLaser(); }
+
+        let rectNave = nave.getBoundingClientRect();
+        let hitboxNave = { left: rectNave.left + 25, right: rectNave.right - 25, top: rectNave.top + 25, bottom: rectNave.bottom - 25 };
+
+        for (let i = lasers1.length - 1; i >= 0; i--) {
+            let l = lasers1[i];
+            if (!l || !l.element || typeof l.x === 'undefined') { lasers1.splice(i, 1); continue; }
+
+            l.x -= 30; l.element.style.left = l.x + "px";
+            let rectLaser = l.element.getBoundingClientRect(); let laserGolpeo = false;
+
+            meteoritos.forEach(id => {
+                let met = document.getElementById(id);
+                if (met && met.style.left !== "-500px" && met.style.left !== "-70%") {
+                    let rM = met.getBoundingClientRect();
+                    if (rectLaser.left < rM.right && rectLaser.right > rM.left && rectLaser.top < rM.bottom && rectLaser.bottom > rM.top) {
+                        crearExplosion(rM.left, rM.top, tablero); crearTextoPunto(rM.left, rM.top, tablero, "#00ffcc");
+                        Explulsar(id); Aumentar_Puntos(); laserGolpeo = true;
+                    }
+                }
+            });
+            if (laserGolpeo || l.x < -100) { l.element.remove(); lasers1.splice(i, 1); }
+        }
+
+        meteoritos.forEach(id => {
+            let met = document.getElementById(id);
+            if (met && met.style.left !== "-500px" && met.style.left !== "-70%") {
+                let rM = met.getBoundingClientRect();
+                if (rM.left > dim.limiteX + 10) { Game_Over_1("LOS METEORITOS ROMPIERON LA DEFENSA."); }
+                else if (hitboxNave.left < rM.right && hitboxNave.right > rM.left && hitboxNave.top < rM.bottom && hitboxNave.bottom > rM.top) {
+                    RecibirDano(rectNave);
+                }
+            }
+        });
+    }
+    loopJuego1 = setInterval(loopPrincipal1, 30);
+
+    document.getElementById("Pause").onclick = function () {
+        if (nivel1Terminado) return; isPaused1 = !isPaused1;
+        if (isPaused1) {
+            document.getElementById("Pausa_Pantalla").style.display = "flex"; document.getElementById("Fondo_Ciberpunk").pause();
+            meteoritos.forEach(id => { let el = document.getElementById(id); if (el) { let comp = window.getComputedStyle(el); el.style.left = comp.left; el.style.transition = "none"; } });
+        } else {
+            document.getElementById("Pausa_Pantalla").style.display = "none"; document.getElementById("Fondo_Ciberpunk").play();
+            meteoritos.forEach(id => { let el = document.getElementById(id); if (el && el.style.left !== "-500px" && el.style.left !== "-70%") { el.style.transition = "3.5s linear"; el.style.left = "80%"; } });
+        }
+    };
 
     function Aumentar_Puntos() {
         if (nivel1Terminado || isPaused1) return;
-        Puntaje++;
-        document.getElementById("Puntaje").innerHTML = Puntaje + "&nbsp;/&nbsp;" + metaLvl1;
+        Puntaje++; document.getElementById("Puntaje").innerHTML = Puntaje + "&nbsp;/&nbsp;" + metaLvl1;
         if (Puntaje >= metaLvl1) {
-            terminarJuego();
+            nivel1Terminado = true; keys1 = {}; document.getElementById("Fondo_Ciberpunk").pause(); document.getElementById("Triunfo").play(); detenerMeteoritos();
+            Swal.fire({
+                title: '<span style="font-family: \'Press Start 2P\', cursive; color: #ff00ff; text-shadow: 0 0 10px #ff00ff; font-size: 22px;">¡AMENAZA NEUTRALIZADA!</span>',
+                html: '<div style="font-family: sans-serif; color: #e0e0e0; font-size: 16px;">La primera oleada ha sido destruida.<br><b>Sistemas de la nave listos para evolucionar a Doble Láser.</b></div>',
+                imageUrl: 'IMG/Check.png', imageWidth: 100, background: 'rgba(0, 5, 15, 0.95)', color: '#fff',
+                confirmButtonText: '<span style="font-family: \'Press Start 2P\', cursive; font-size: 12px;">INICIAR FASE 2</span>', confirmButtonColor: '#ff00ff', customClass: { popup: 'alerta-neon-lvl2' }, allowOutsideClick: false
+            }).then(() => {
+                document.getElementById("NIVEL_01").style.display = "none"; document.getElementById("NIVEL_02").style.display = "flex";
+                if (typeof PLAYlvl2 === "function") PLAYlvl2();
+            });
         }
     }
 
-    function terminarJuego() {
-        nivel1Terminado = true;
-        document.getElementById("Tiempo").innerHTML = 70;
-        document.getElementById("Puntaje").innerHTML = "0&nbsp;/&nbsp;" + metaLvl1;
-        document.getElementById("Fondo_Ciberpunk").pause();
-        document.getElementById("Triunfo").play();
-
-        document.getElementById("NEXT").onclick = () => {
-            document.getElementById("NIVEL_01").style.display = "none";
-            document.getElementById("NIVEL_02").style.display = "flex";
-            document.getElementById("NEXT").onclick = null; // Limpiar evento
-        };
-        
-        detenerMeteoritos();
-
+    function Game_Over_1(razon) {
+        if (nivel1Terminado) return; nivel1Terminado = true; keys1 = {}; detenerMeteoritos();
         Swal.fire({
-            title: '<span style="font-family: \'Press Start 2P\', cursive; color: #ff00ff; text-shadow: 0 0 10px #ff00ff; font-size: 22px; line-height: 1.5;">¡AMENAZA NEUTRALIZADA!</span>',
-            html: '<div style="font-family: sans-serif; color: #e0e0e0; font-size: 16px; line-height: 1.6; padding: 10px;"><p>La primera oleada ha sido destruida, pero la verdadera prueba apenas comienza.</p><p><strong style="color: #00ffcc; text-shadow: 0 0 8px #00ffcc; font-size: 18px;">¡Excelente trabajo, Comandante!</strong></p><p>Recarga tus escudos y prepárate. El <b>Nivel 2</b> no tendrá piedad.</p></div>',
-            imageUrl: 'IMG/Check.png', imageWidth: 100, imageAlt: 'Misión Cumplida',
-            background: 'rgba(0, 5, 15, 0.95)', color: '#fff', backdrop: 'rgba(255, 0, 255, 0.2)', 
-            confirmButtonText: '<span style="font-family: \'Press Start 2P\', cursive; font-size: 12px;">INICIAR FASE 2</span>',
-            confirmButtonColor: '#ff00ff', width: '50%', padding: '2em', allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false, stopKeydownPropagation: false, customClass: { popup: 'alerta-neon-lvl1' }
-        });
-
-        Puntaje = 0; Tiempo = 71;
+            title: '<span style="font-family: \'Press Start 2P\', cursive; color: #ff3300; font-size: 24px;">¡MISIÓN FALLIDA!</span>',
+            html: '<b style="color:white; font-size: 16px;">' + razon + '</b><br><br>La Tierra ha sufrido daños críticos.',
+            icon: 'error', background: 'rgba(15, 0, 0, 0.95)', color: '#fff', confirmButtonText: '<span style="font-family: \'Press Start 2P\', cursive; font-size: 12px;">REINTENTAR NIVEL 1</span>', confirmButtonColor: '#ff3300', allowOutsideClick: false
+        }).then(() => { Tiempo = 71; Puntaje = 0; document.getElementById("Tiempo").innerHTML = 70; document.getElementById("Puntaje").innerHTML = "0&nbsp;/&nbsp;" + metaLvl1; JUEGO(); });
     }
 
     function detenerMeteoritos() {
-        clearInterval(Reanudar_trayectoria); clearInterval(Reanudar_trayectoria2);
-        clearInterval(Restar_Tiempo); clearInterval(perdisteLoop);
-        clearTimeout(Activador_inicial); clearTimeout(Activador_inicial2);
-
-        meteoritos.forEach(id => {
-            let el = document.getElementById(id);
-            if(el) { el.style.left = "-70%"; el.style.transition = "0s"; }
-        });
+        spawnIntervals1.forEach(clearInterval); spawnIntervals1 = [];
+        spawnTimeouts1.forEach(clearTimeout); spawnTimeouts1 = [];
+        clearInterval(Restar_Tiempo); clearInterval(loopJuego1);
+        meteoritos.forEach(id => { let el = document.getElementById(id); if (el) { el.style.transition = "0s"; el.style.left = "-70%"; } });
+        lasers1.forEach(l => { if (l && l.element) l.element.remove(); }); lasers1 = [];
     }
 
-    function iniciarTrayectoria(id, distancia, velocidad) {
+    function iniciarTrayectoria(id, velocidad) {
+        if (nivel1Terminado || isPaused1) return;
         let el = document.getElementById(id);
-        if(el) {
-            let dim = getDimensiones1();
-            let altura = Math.round(Math.random() * dim.alturaMax);
-            el.style.left = distancia + "%";
-            el.style.top = altura + "px";
-            el.style.transition = velocidad + "s";
-        }
+        if (el) { let dim = getDimensiones1(); let altura = Math.round(Math.random() * dim.alturaMax); el.style.left = "80%"; el.style.top = altura + "px"; el.style.transition = velocidad + "s linear"; }
     }
 
-    Activador_inicial = setTimeout(() => iniciarTrayectoria('Meteiorito', 80, 2.4), 2000);
-    Reanudar_trayectoria = setInterval(() => iniciarTrayectoria('Meteiorito', 80, 2.4), 2430);
-
-    Activador_inicial2 = setTimeout(() => iniciarTrayectoria('Meteiorito2', 80, 2.4), 2600);
-    Reanudar_trayectoria2 = setInterval(() => iniciarTrayectoria('Meteiorito2', 80, 2.4), 2350);
+    configOleada1.forEach(m => {
+        spawnTimeouts1.push(setTimeout(() => iniciarTrayectoria(m.id, m.vel), m.delay));
+        spawnIntervals1.push(setInterval(() => iniciarTrayectoria(m.id, m.vel), m.freq));
+    });
 
     function Explulsar(id) {
-        let sound = (id === 'Meteiorito') ? document.getElementById("Puntos_sound") : document.getElementById("Punto2");
-        if(sound) { sound.currentTime = 0; sound.play(); }
-        let el = document.getElementById(id);
-        let dim = getDimensiones1();
-        let altura = Math.round(Math.random() * dim.alturaMax);
-        el.style.left = "-500px";
-        el.style.top = altura + "px";
-        el.style.transition = "1.8s";
-    }
-
-    function checkPerdiste() {
-        if (nivel1Terminado || isPaused1) return; // FIX DE PAUSA APLICADO
-        let m1 = document.getElementById("Meteiorito");
-        let m2 = document.getElementById("Meteiorito2");
-        let dim = getDimensiones1();
-
-        if ((m1 && m1.offsetLeft > dim.limiteX) || (m2 && m2.offsetLeft > dim.limiteX)) {
-            nivel1Terminado = true; 
-            document.getElementById("Perdiste_sound").play();
-            alert("YA ES DEMASIADO TARDE, LOS METEORITOS DESTRUYERON GRAN PARTE DEL CONTINENTE Y LO MEJOR ES ESPERAR LO PEOR");
-            reiniciarEstado();
-        }
-    }
-    perdisteLoop = setInterval(checkPerdiste, 20);
-
-    function reiniciarEstado() {
-        detenerMeteoritos();
-        Tiempo = 71; Puntaje = 0;
-        document.getElementById("Tiempo").innerHTML = 70;
-        document.getElementById("Puntaje").innerHTML = "0&nbsp;/&nbsp;" + metaLvl1;
-        nivel1Terminado = false; 
-
-        Activador_inicial = setTimeout(() => iniciarTrayectoria('Meteiorito', 80, 2.4), 2000);
-        Reanudar_trayectoria = setInterval(() => iniciarTrayectoria('Meteiorito', 80, 2.4), 2430);
-
-        Activador_inicial2 = setTimeout(() => iniciarTrayectoria('Meteiorito2', 80, 2.4), 2600);
-        Reanudar_trayectoria2 = setInterval(() => iniciarTrayectoria('Meteiorito2', 80, 2.4), 2350);
-
-        Restar_Tiempo = setInterval(Tiempo_Disminur, 1000);
-        perdisteLoop = setInterval(checkPerdiste, 20);
+        const sonidos = ["Puntos_sound", "Punto2", "Punto3", "Punto4"];
+        let randomSound = sonidos[Math.floor(Math.random() * sonidos.length)];
+        let sound = document.getElementById(randomSound);
+        if (sound) { sound.currentTime = 0; let p = sound.play(); if (p !== undefined) p.catch(() => { }); }
+        let el = document.getElementById(id); let dim = getDimensiones1(); let altura = Math.round(Math.random() * dim.alturaMax);
+        el.style.left = "-500px"; el.style.top = altura + "px"; el.style.transition = "1.8s";
     }
 }
 
 document.getElementById("Play").addEventListener('click', PLAY);
-
 function PLAY() {
-    if (juegoIniciadoLvl1) return;
-    juegoIniciadoLvl1 = true;
-    let Conteo = 4;
-    
-    var musicaFondo = document.getElementById("Fondo_Ciberpunk");
-    musicaFondo.volume = 0.02; 
-    musicaFondo.play();
-
-    document.getElementById("Texo").style.left = "-900px";
-    document.getElementById("Contenedor_Mensaje_Star").style.opacity = "0";
-
+    if (juegoIniciadoLvl1) return; juegoIniciadoLvl1 = true; let Conteo = 4;
+    var mf = document.getElementById("Fondo_Ciberpunk"); mf.volume = 0.02; mf.play();
+    document.getElementById("Texo").style.display = "none"; document.querySelector("#Start .Dificultad_Flex").style.display = "none"; document.getElementById("Play").style.display = "none";
     setTimeout(JUEGO, 4100);
-
     let cuentaRegresiva = setInterval(() => {
-        Conteo--;
-        document.getElementById("RGB").innerHTML = Conteo;
-        if (Conteo === -1) {
-            clearInterval(cuentaRegresiva);
-            document.getElementById("Contenedor_contador").style.display = "none";
-            document.getElementById("Start").style.display = "none";
-            DETENER_JUEGO();
-        }
+        Conteo--; document.getElementById("RGB").innerHTML = Conteo;
+        if (Conteo === -1) { clearInterval(cuentaRegresiva); document.getElementById("Contenedor_contador").style.display = "none"; document.getElementById("Start").style.display = "none"; }
     }, 1000);
 }
 
-function DETENER_JUEGO() {
-    document.getElementById("Pause").addEventListener('click', () => {
-        if (nivel1Terminado) return;
-        const meteoritos = ['Meteiorito', 'Meteiorito2'];
-        isPaused1 = !isPaused1;
-
-        if (isPaused1) {
-            document.getElementById("Pausa_Pantalla").style.display = "flex";
-            document.getElementById("Fondo_Ciberpunk").pause();
-            
-            clearInterval(Restar_Tiempo);
-            clearInterval(Reanudar_trayectoria);
-            clearInterval(Reanudar_trayectoria2);
-            clearTimeout(Activador_inicial);
-            clearTimeout(Activador_inicial2);
-
-            meteoritos.forEach(id => {
-                let el = document.getElementById(id);
-                if(el) {
-                    let comp = window.getComputedStyle(el);
-                    el.style.transition = "none";
-                    el.style.left = comp.left;
-                    el.style.top = comp.top;
-                }
-            });
-        } else {
-            document.getElementById("Pausa_Pantalla").style.display = "none";
-            document.getElementById("Fondo_Ciberpunk").play();
-            
-            Restar_Tiempo = setInterval(() => {
-                if (nivel1Terminado || isPaused1) return;
-                Tiempo--;
-                document.getElementById("Tiempo").innerHTML = Tiempo;
-                if (Tiempo <= 0) {
-                    document.getElementById("Perdiste_sound").play();
-                    alert("Lo lamento perdiste");
-                }
-            }, 1000);
-
-            Reanudar_trayectoria = setInterval(() => {
-                let el = document.getElementById('Meteiorito');
-                if(el) { el.style.transition = "2.4s"; el.style.left = "80%"; }
-            }, 2430);
-            
-            Reanudar_trayectoria2 = setInterval(() => {
-                let el = document.getElementById('Meteiorito2');
-                if(el) { el.style.transition = "2.4s"; el.style.left = "80%"; }
-            }, 2350);
-
-            meteoritos.forEach(id => {
-                let el = document.getElementById(id);
-                if(el) { el.style.transition = "2.4s"; el.style.left = "80%"; }
-            });
-        }
-    });
+function aplicarTransicionCinematica(idOc, idMo) {
+    let eO = document.getElementById(idOc); let eM = document.getElementById(idMo);
+    eO.style.transform = "scale(1.5) translateZ(100px)"; eO.style.opacity = "0"; eO.style.filter = "blur(20px)"; eO.style.transition = "all 0.8s ease";
+    setTimeout(() => { eO.style.display = "none"; eO.style.transform = "none"; eO.style.filter = "none"; eM.style.display = "flex"; void eM.offsetWidth; eM.style.opacity = "1"; }, 800);
 }
-
-// TRANSICIONES LINEALES LIMPIAS
-function aplicarTransicionCinematica(idOcultar, idMostrar) {
-    let elOcultar = document.getElementById(idOcultar);
-    let elMostrar = document.getElementById(idMostrar);
-    
-    elOcultar.style.transform = "scale(1.5) translateZ(100px)";
-    elOcultar.style.opacity = "0";
-    elOcultar.style.filter = "blur(20px)";
-    elOcultar.style.transition = "all 0.8s ease";
-    
-    setTimeout(() => {
-        elOcultar.style.display = "none";
-        elOcultar.style.transform = "none"; 
-        elOcultar.style.filter = "none";
-        
-        elMostrar.style.display = "flex"; 
-        void elMostrar.offsetWidth; 
-        elMostrar.style.opacity = "1";
-    }, 800);
-}
-
 function Mover() { aplicarTransicionCinematica("Seccion_01", "Reglas"); }
 function Mover_2() { aplicarTransicionCinematica("Reglas", "Seccion_2"); }
-function Mover_3() { 
-    document.getElementById("narracion").pause();
-    aplicarTransicionCinematica("Seccion_2", "Seccion_Juego"); 
-}
-
-// RELOJ INFERIOR
+function Mover_3() { document.getElementById("narracion").pause(); aplicarTransicionCinematica("Seccion_2", "Seccion_Juego"); }
 function Reloj_Tiempo() {
-    let Fecha = new Date();
-    let Horas = Fecha.getHours();
-    let ampm = Horas >= 12 ? 'PM' : 'AM';
-    Horas = Horas % 12;
-    Horas = Horas ? Horas : 12;
-
-    document.getElementById("Dia_Semana").textContent = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'][Fecha.getDay()];
-    document.getElementById("dia").textContent = Fecha.getDate();
-    document.getElementById("mes").textContent = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'][Fecha.getMonth()];
-    document.getElementById("año").textContent = Fecha.getFullYear();
-
-    document.getElementById("Hora").textContent = Horas < 10 ? "0" + Horas : Horas;
-    document.getElementById("Minutos").textContent = Fecha.getMinutes() < 10 ? "0" + Fecha.getMinutes() : Fecha.getMinutes();
-    document.getElementById("Segundos").textContent = Fecha.getSeconds() < 10 ? "0" + Fecha.getSeconds() : Fecha.getSeconds();
+    let F = new Date(); let H = F.getHours(); let ampm = H >= 12 ? 'PM' : 'AM'; H = H % 12; H = H ? H : 12;
+    document.getElementById("Dia_Semana").textContent = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'][F.getDay()];
+    document.getElementById("dia").textContent = F.getDate(); document.getElementById("mes").textContent = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'][F.getMonth()];
+    document.getElementById("año").textContent = F.getFullYear(); document.getElementById("Hora").textContent = H < 10 ? "0" + H : H;
+    document.getElementById("Minutos").textContent = F.getMinutes() < 10 ? "0" + F.getMinutes() : F.getMinutes(); document.getElementById("Segundos").textContent = F.getSeconds() < 10 ? "0" + F.getSeconds() : F.getSeconds();
     document.getElementById("AMPM").textContent = ampm;
 }
-setInterval(Reloj_Tiempo, 1000);
-Reloj_Tiempo();
+setInterval(Reloj_Tiempo, 1000); Reloj_Tiempo();
